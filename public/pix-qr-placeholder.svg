@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" fill="none">
+  <rect width="320" height="320" rx="24" fill="#F8F5EF"/>
+  <rect x="32" y="32" width="72" height="72" rx="8" fill="#111111"/>
+  <rect x="46" y="46" width="44" height="44" rx="4" fill="#F8F5EF"/>
+  <rect x="216" y="32" width="72" height="72" rx="8" fill="#111111"/>
+  <rect x="230" y="46" width="44" height="44" rx="4" fill="#F8F5EF"/>
+  <rect x="32" y="216" width="72" height="72" rx="8" fill="#111111"/>
+  <rect x="46" y="230" width="44" height="44" rx="4" fill="#F8F5EF"/>
+  <path d="M132 32H152V52H132V32ZM168 32H188V52H168V32ZM204 132H224V152H204V132ZM132 168H152V188H132V168ZM168 168H188V188H168V168ZM204 168H224V188H204V168ZM132 204H152V224H132V204ZM168 204H188V224H168V204ZM204 204H224V224H204V204ZM240 132H260V152H240V132ZM240 168H260V188H240V168ZM240 204H260V224H240V204ZM132 240H152V260H132V240ZM168 240H188V260H168V240ZM204 240H224V260H204V240ZM240 240H260V260H240V240Z" fill="#111111"/>
+  <text x="160" y="302" text-anchor="middle" fill="#3A2F26" font-size="14" font-family="Inter, sans-serif">
+    QR Code PIX (substitua pela imagem real)
+  </text>
+</svg>

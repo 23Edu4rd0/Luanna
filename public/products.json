@@ -1,0 +1,335 @@
+[
+  {
+    "id": "cozinha-01",
+    "category": "Cozinha",
+    "name": "Jogo de panela",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-02",
+    "category": "Cozinha",
+    "name": "Kit de facas",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-03",
+    "category": "Cozinha",
+    "name": "Panela de pressão 4,5L",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-04",
+    "category": "Cozinha",
+    "name": "Misteira",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-05",
+    "category": "Cozinha",
+    "name": "Jogo de copos",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-06",
+    "category": "Cozinha",
+    "name": "Jogo de xícaras",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-07",
+    "category": "Cozinha",
+    "name": "Jarra de suco (vidro)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-08",
+    "category": "Cozinha",
+    "name": "Garrafa de água (vidro)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-09",
+    "category": "Cozinha",
+    "name": "Filtro",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-10",
+    "category": "Cozinha",
+    "name": "Jogo porta-temperos",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-11",
+    "category": "Cozinha",
+    "name": "Conjunto de potes para mantimentos",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-12",
+    "category": "Cozinha",
+    "name": "Pipoqueira",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-13",
+    "category": "Cozinha",
+    "name": "Saca-rolha",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-14",
+    "category": "Cozinha",
+    "name": "Descascador de cenoura e ralador",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-15",
+    "category": "Cozinha",
+    "name": "Kit colheres de cozinha (concha, colher para arroz etc)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-16",
+    "category": "Cozinha",
+    "name": "Queijeira",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-17",
+    "category": "Cozinha",
+    "name": "Porta-detergente + porta-esponja",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-18",
+    "category": "Cozinha",
+    "name": "Tábua de cortar carne",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-19",
+    "category": "Cozinha",
+    "name": "Escorredor de louça (inox)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-20",
+    "category": "Cozinha",
+    "name": "Forma de bolo",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-21",
+    "category": "Cozinha",
+    "name": "Tabuleiro M",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-22",
+    "category": "Cozinha",
+    "name": "Tabuleiro G",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-23",
+    "category": "Cozinha",
+    "name": "Jogo de pano de prato",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-24",
+    "category": "Cozinha",
+    "name": "Liquidificador",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-25",
+    "category": "Cozinha",
+    "name": "Tapete para cozinha",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "cozinha-26",
+    "category": "Cozinha",
+    "name": "Escorredor de macarrão",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-cozinha.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "quarto-01",
+    "category": "Quarto",
+    "name": "Jogo de lençol cama queen (1/2)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-quarto.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "quarto-02",
+    "category": "Quarto",
+    "name": "Jogo de lençol cama queen (2/2)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-quarto.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "quarto-03",
+    "category": "Quarto",
+    "name": "Jogo de cama queen",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-quarto.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "quarto-04",
+    "category": "Quarto",
+    "name": "Cobertor casal",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-quarto.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "quarto-05",
+    "category": "Quarto",
+    "name": "Ferro de passar",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-quarto.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "banheiro-01",
+    "category": "Banheiro",
+    "name": "Jogo de toalha de banho (1/2)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-banheiro.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "banheiro-02",
+    "category": "Banheiro",
+    "name": "Jogo de toalha de banho (2/2)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-banheiro.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "banheiro-03",
+    "category": "Banheiro",
+    "name": "Toalhas de rosto (2 unidades)",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-banheiro.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "banheiro-04",
+    "category": "Banheiro",
+    "name": "Lixeira inox",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-banheiro.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "banheiro-05",
+    "category": "Banheiro",
+    "name": "Tapete para banheiro",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-banheiro.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "banheiro-06",
+    "category": "Banheiro",
+    "name": "Kit banheiro",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/category-banheiro.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  }
+]

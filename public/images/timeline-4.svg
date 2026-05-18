@@ -1,0 +1,13 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad4" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#f5f0eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#faf9f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#grad4)"/>
+  <circle cx="400" cy="300" r="120" fill="#c5b358" opacity="0.1"/>
+  <text x="400" y="280" font-size="64" font-family="serif" font-weight="bold" text-anchor="middle" fill="#c5b358">👰</text>
+  <text x="400" y="350" font-size="48" font-family="serif" text-anchor="middle" fill="#2c2c2c">Nosso Grande Dia</text>
+  <text x="400" y="400" font-size="24" font-family="serif" text-anchor="middle" fill="#4a4a4a">2026</text>
+</svg>

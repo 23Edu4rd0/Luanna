@@ -1,0 +1,14 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="giftGrad4" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#faf9f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5f0eb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#giftGrad4)"/>
+  <polygon points="200,100 280,160 280,260 200,300 120,260 120,160" fill="#e8dcc8" stroke="#c5b358" stroke-width="2"/>
+  <line x1="200" y1="100" x2="200" y2="300" stroke="#c5b358" stroke-width="2"/>
+  <line x1="120" y1="160" x2="280" y2="160" stroke="#c5b358" stroke-width="2"/>
+  <circle cx="200" cy="200" r="25" fill="#c5b358" opacity="0.15"/>
+  <text x="200" y="340" font-size="20" font-family="serif" text-anchor="middle" fill="#4a4a4a">Presente Premium</text>
+</svg>
