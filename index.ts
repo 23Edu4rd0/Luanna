@@ -47,7 +47,11 @@ await syncGiftCatalog();
 
 async function getIndexHtmlWithConfig(): Promise<string> {
   try {
-    const htmlFile = await Bun.file('./index.html').text();
+    const distHtmlFile = Bun.file('./dist/index.html');
+    const sourceHtmlFile = Bun.file('./index.html');
+    const htmlFile = await (
+      (await distHtmlFile.exists()) ? distHtmlFile : sourceHtmlFile
+    ).text();
     return htmlFile
       .replace(/{{COUPLE_NAMES}}/g, COUPLE_NAMES)
       .replace(/{{WEDDING_DATE}}/g, WEDDING_DATE);
