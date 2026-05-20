@@ -8,14 +8,13 @@ import { buildDefaultGifts } from './src/gifts/gift-catalog';
 const app = new Hono();
 
 // ✏️ EDITAR: Configure no arquivo .env
-const PIX_KEY = process.env.PIX_KEY || 'sua-chave-pix@domain.com';
 const COUPLE_NAMES = process.env.COUPLE_NAMES || 'Casal Feliz';
 const WEDDING_DATE = process.env.WEDDING_DATE || '2026-10-25';
 const PORT = process.env.PORT || 3000;
 
 async function syncGiftCatalog() {
   const existingGifts = db.query('SELECT name FROM gifts ORDER BY id ASC').all() as Array<{ name: string }>;
-  const defaultGifts = buildDefaultGifts(PIX_KEY);
+  const defaultGifts = buildDefaultGifts();
 
   const isOutdated =
     existingGifts.length !== defaultGifts.length ||
@@ -29,11 +28,11 @@ async function syncGiftCatalog() {
   db.exec('DELETE FROM gifts');
 
   const insertGift = db.query(
-    'INSERT INTO gifts (category, name, description, price, imageUrl, reserved, pixKey) VALUES (?, ?, ?, ?, ?, 0, ?)'
+    'INSERT INTO gifts (category, name, description, price, imageUrl, reserved) VALUES (?, ?, ?, ?, ?, 0)'
   );
 
   for (const gift of defaultGifts) {
-    insertGift.run(gift.category, gift.name, gift.description, gift.price, gift.imageUrl, gift.pixKey);
+    insertGift.run(gift.category, gift.name, gift.description, gift.price, gift.imageUrl);
   }
 
   console.log(`🌿 Gift catalog synced with ${defaultGifts.length} options.`);
@@ -77,7 +76,6 @@ app.get('/api/config', (ctx) => {
   return ctx.json({
     coupleNames: COUPLE_NAMES,
     weddingDate: WEDDING_DATE,
-    pixKey: PIX_KEY,
   });
 });
 
@@ -212,7 +210,6 @@ app.get('/api/health', (ctx) => {
     status: 'ok',
     coupleNames: COUPLE_NAMES,
     weddingDate: WEDDING_DATE,
-    pixKey: PIX_KEY,
     timestamp: new Date().toISOString(),
   });
 });

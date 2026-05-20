@@ -4,7 +4,7 @@
     "category": "Cozinha",
     "name": "Jogo de panela",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/jogo_panelas.png",
     "reserved": false,
     "reservedBy": ""
   },
@@ -13,7 +13,7 @@
     "category": "Cozinha",
     "name": "Kit de facas",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/kit_facas.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -22,7 +22,7 @@
     "category": "Cozinha",
     "name": "Panela de pressão 4,5L",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/panela_pressao.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -31,7 +31,7 @@
     "category": "Cozinha",
     "name": "Misteira",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/misteira.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -40,7 +40,7 @@
     "category": "Cozinha",
     "name": "Jogo de copos",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/jogo_copos.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -49,7 +49,7 @@
     "category": "Cozinha",
     "name": "Jogo de xícaras",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/jogo_xicaras.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -58,7 +58,7 @@
     "category": "Cozinha",
     "name": "Jarra de suco (vidro)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/jarra_suco.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -67,7 +67,7 @@
     "category": "Cozinha",
     "name": "Garrafa de água (vidro)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/garrafa_agua.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -76,7 +76,7 @@
     "category": "Cozinha",
     "name": "Filtro",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/filtro.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -85,7 +85,7 @@
     "category": "Cozinha",
     "name": "Jogo porta-temperos",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/porta_tempeiros.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -94,7 +94,7 @@
     "category": "Cozinha",
     "name": "Conjunto de potes para mantimentos",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/potes_para_mantimentos.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -103,7 +103,7 @@
     "category": "Cozinha",
     "name": "Pipoqueira",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/pipoqueira.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -112,7 +112,7 @@
     "category": "Cozinha",
     "name": "Saca-rolha",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/sacarolha.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -121,7 +121,7 @@
     "category": "Cozinha",
     "name": "Descascador de cenoura e ralador",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/ralador.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -130,7 +130,7 @@
     "category": "Cozinha",
     "name": "Kit colheres de cozinha (concha, colher para arroz etc)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/kit_colheres_cozinha.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -139,7 +139,7 @@
     "category": "Cozinha",
     "name": "Queijeira",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/queijeira.png",
     "reserved": false,
     "reservedBy": ""
   },
@@ -148,7 +148,7 @@
     "category": "Cozinha",
     "name": "Porta-detergente + porta-esponja",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/porta_detergente.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -157,7 +157,7 @@
     "category": "Cozinha",
     "name": "Tábua de cortar carne",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/tabua_cortar_carne.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -166,7 +166,7 @@
     "category": "Cozinha",
     "name": "Escorredor de louça (inox)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/escorredor_louca.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -175,7 +175,7 @@
     "category": "Cozinha",
     "name": "Forma de bolo",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/forma_bolo.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -184,7 +184,7 @@
     "category": "Cozinha",
     "name": "Tabuleiro M",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/tabuleiro.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -193,7 +193,7 @@
     "category": "Cozinha",
     "name": "Tabuleiro G",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/tabuleiro.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -202,7 +202,7 @@
     "category": "Cozinha",
     "name": "Jogo de pano de prato",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/pano.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -211,7 +211,7 @@
     "category": "Cozinha",
     "name": "Liquidificador",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/liquidificador.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -220,7 +220,7 @@
     "category": "Cozinha",
     "name": "Tapete para cozinha",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/tapete.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -229,7 +229,7 @@
     "category": "Cozinha",
     "name": "Escorredor de macarrão",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-cozinha.jpg",
+    "imageUrl": "/images/products/escorredor.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -238,7 +238,7 @@
     "category": "Quarto",
     "name": "Jogo de lençol cama queen (1/2)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-quarto.jpg",
+    "imageUrl": "/images/products/quarto-01.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -247,7 +247,7 @@
     "category": "Quarto",
     "name": "Jogo de lençol cama queen (2/2)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-quarto.jpg",
+    "imageUrl": "/images/products/quarto-02.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -256,7 +256,7 @@
     "category": "Quarto",
     "name": "Jogo de cama queen",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-quarto.jpg",
+    "imageUrl": "/images/products/quarto-03.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -265,7 +265,7 @@
     "category": "Quarto",
     "name": "Cobertor casal",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-quarto.jpg",
+    "imageUrl": "/images/products/quarto-04.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -274,7 +274,7 @@
     "category": "Quarto",
     "name": "Ferro de passar",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-quarto.jpg",
+    "imageUrl": "/images/products/quarto-05.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -283,7 +283,7 @@
     "category": "Banheiro",
     "name": "Jogo de toalha de banho (1/2)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-banheiro.jpg",
+    "imageUrl": "/images/products/banheiro-01.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -292,7 +292,7 @@
     "category": "Banheiro",
     "name": "Jogo de toalha de banho (2/2)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-banheiro.jpg",
+    "imageUrl": "/images/products/banheiro-02.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -301,7 +301,7 @@
     "category": "Banheiro",
     "name": "Toalhas de rosto (2 unidades)",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-banheiro.jpg",
+    "imageUrl": "/images/products/banheiro-03.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -310,7 +310,7 @@
     "category": "Banheiro",
     "name": "Lixeira inox",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-banheiro.jpg",
+    "imageUrl": "/images/products/banheiro-04.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -319,7 +319,7 @@
     "category": "Banheiro",
     "name": "Tapete para banheiro",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-banheiro.jpg",
+    "imageUrl": "/images/products/banheiro-05.jpg",
     "reserved": false,
     "reservedBy": ""
   },
@@ -328,7 +328,70 @@
     "category": "Banheiro",
     "name": "Kit banheiro",
     "referenceUrl": "",
-    "imageUrl": "/images/products/category-banheiro.jpg",
+    "imageUrl": "/images/products/banheiro-06.jpg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "livros-01",
+    "category": "Livros pro dev",
+    "name": "Manual de persuasao do FBI",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/livros-placeholder.svg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "livros-02",
+    "category": "Livros pro dev",
+    "name": "Como falar em publico e encantar as pessoas",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/livros-placeholder.svg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "livros-03",
+    "category": "Livros pro dev",
+    "name": "Como fazer amigos e influenciar pessoas",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/livros-placeholder.svg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "livros-04",
+    "category": "Livros pro dev",
+    "name": "SQL - guia pratico: um guia para uso de SQL 3 edicao",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/livros-placeholder.svg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "livros-05",
+    "category": "Livros pro dev",
+    "name": "Habitos Atomicos: um Metodo Facil e Comprovado de Criar Bons Habitos e se Livrar dos Maus - Idioma",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/livros-placeholder.svg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "livros-06",
+    "category": "Livros pro dev",
+    "name": "Estatistica: O que e, para que serve, como funciona",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/livros-placeholder.svg",
+    "reserved": false,
+    "reservedBy": ""
+  },
+  {
+    "id": "livros-07",
+    "category": "Livros pro dev",
+    "name": "Robo selvagem",
+    "referenceUrl": "",
+    "imageUrl": "/images/products/livros-placeholder.svg",
     "reserved": false,
     "reservedBy": ""
   }

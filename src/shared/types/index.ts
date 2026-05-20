@@ -9,8 +9,6 @@ export interface Gift {
   imageUrl: string;
   reserved: boolean;
   reservedBy?: string;
-  pixKey: string;
-  pixQrCode?: string;
 }
 
 export interface GiftReservation {
@@ -44,6 +42,4 @@ export interface WeddingConfig {
   weddingDateMs: number;
   storyTitle: string;
   storyText: string;
-  pixKey: string;
-  pixQrCodeUrl: string;
 }

@@ -3,13 +3,11 @@ import { useEffect, useState } from 'react';
 interface WeddingConfig {
   coupleNames: string;
   weddingDate: string;
-  pixKey: string;
 }
 
 const DEFAULT_CONFIG: WeddingConfig = {
   coupleNames: 'Casal Feliz',
   weddingDate: '2026-10-25',
-  pixKey: 'sua-chave-pix@domain.com',
 };
 
 export function useWeddingConfig() {

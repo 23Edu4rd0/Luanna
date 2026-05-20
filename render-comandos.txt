@@ -1,0 +1,19 @@
+# 1) AJUSTE O APP PARA PRODUCAO (RODAR UMA VEZ NO PROJETO)
+sed -i "s|Bun.file('./index.html')|Bun.file('./dist/index.html')|" index.ts
+
+# 2) TESTAR LOCALMENTE
+bun install
+bun run build
+bun run start
+curl -sS http://localhost:3000/api/health
+
+# 3) COMMIT E PUSH
+git add index.ts
+git commit -m "fix: servir dist/index.html em producao"
+git push origin main
+
+# 4) RENDER - BUILD COMMAND (COLAR NO CAMPO BUILD COMMAND)
+curl -fsSL https://bun.sh/install | bash && export BUN_INSTALL="$HOME/.bun" && export PATH="$BUN_INSTALL/bin:$PATH" && bun install && bun run build
+
+# 5) RENDER - START COMMAND (COLAR NO CAMPO START COMMAND)
+export BUN_INSTALL="$HOME/.bun" && export PATH="$BUN_INSTALL/bin:$PATH" && bun run start

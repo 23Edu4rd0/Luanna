@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#f3efe6" />
+  <rect x="40" y="40" width="720" height="420" rx="32" fill="#ffffff" stroke="#e2d9c7" stroke-width="3" />
+  <text x="50%" y="50%" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="26" fill="#3b332d">
+    Capa protegida por direitos autorais
+  </text>
+</svg>

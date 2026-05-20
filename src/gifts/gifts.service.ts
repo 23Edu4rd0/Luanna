@@ -1,7 +1,7 @@
 import { Gift } from '../shared/types';
 import { buildDefaultGifts } from './gift-catalog';
 
-export const DEFAULT_GIFTS: Omit<Gift, 'id'>[] = buildDefaultGifts('sua-chave-pix@domain.com');
+export const DEFAULT_GIFTS: Omit<Gift, 'id'>[] = buildDefaultGifts();
 
 export async function getGifts(): Promise<Gift[]> {
   return DEFAULT_GIFTS as Gift[];

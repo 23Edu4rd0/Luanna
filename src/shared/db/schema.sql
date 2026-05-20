@@ -10,8 +10,6 @@ CREATE TABLE IF NOT EXISTS gifts (
   imageUrl TEXT,
   reserved INTEGER DEFAULT 0,
   reservedBy TEXT,
-  pixKey TEXT NOT NULL,
-  pixQrCode TEXT,
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

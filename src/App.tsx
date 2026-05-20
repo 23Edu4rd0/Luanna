@@ -5,7 +5,13 @@ import crescendoImage from './story/assets/crescendo.jpeg';
 import noivadoImage from './story/assets/noivado.jpeg';
 import casamentoImage from './story/assets/WhatsApp Image 2026-05-12 at 22.39.42.jpeg';
 
-type Category = 'Cozinha' | 'Quarto' | 'Banheiro';
+type Category = 'Cozinha' | 'Quarto' | 'Banheiro' | 'Livros pro dev';
+
+type CategoryMeta = {
+  icon: string;
+  label: string;
+  subtitle?: string;
+};
 
 interface Product {
   id: string;
@@ -17,17 +23,22 @@ interface Product {
   reservedBy: string;
 }
 
-const CATEGORY_ORDER: Category[] = ['Cozinha', 'Quarto', 'Banheiro'];
+const CATEGORY_ORDER: Category[] = ['Cozinha', 'Quarto', 'Banheiro', 'Livros pro dev'];
 
-const CATEGORY_META: Record<Category, { icon: string; label: string }> = {
+const CATEGORY_META: Record<Category, CategoryMeta> = {
   Cozinha: { icon: '🍳', label: 'Cozinha' },
   Quarto: { icon: '🛏️', label: 'Quarto' },
   Banheiro: { icon: '🚿', label: 'Banheiro' },
+  'Livros pro dev': {
+    icon: '📚',
+    label: 'Livros pro dev',
+    subtitle: 'Ajude tbm o cara que fez esse site, que teve todas suas ideias excluidas',
+  },
 };
 
 const STORAGE_KEY = 'housewarming-gift-reservations-v1';
 const DEFAULT_STORY =
-  'Entre encontros inesperados, conversas que atravessaram madrugadas e sonhos compartilhados, construímos uma história feita de carinho, parceria e fé. Agora celebramos nosso casamento com as pessoas que mais amamos e iniciamos nosso novo lar com gratidão.';
+  'Entre encontros inesperados e sonhos compartilhados, construímos uma história de amor, parceria e fé, tendo Jeová como alicerce da nossa união. Hoje iniciamos uma nova fase ao lado das pessoas que amamos e do nosso novo lar, com gratidão no coração.';
 const TIMELINE_EVENTS = [
   {
     id: 1,
@@ -58,7 +69,6 @@ const TIMELINE_EVENTS = [
     imageUrl: casamentoImage,
   },
 ];
-const PIX_QR_CODE_URL = '/pix-qr-placeholder.svg';
 const CEREMONY_DETAILS = [
   { label: 'Data', value: '20/06' },
   { label: 'Horário', value: '16h' },
@@ -77,12 +87,11 @@ export function App() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [guestName, setGuestName] = useState('');
   const [reserveError, setReserveError] = useState('');
-  const [pixCopied, setPixCopied] = useState(false);
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const response = await fetch('/products.json');
+        const response = await fetch('/products.json', { cache: 'no-store' });
         if (!response.ok) {
           throw new Error('Não foi possível carregar os itens.');
         }
@@ -173,7 +182,6 @@ export function App() {
   const weddingDate = new Date(weddingDateTime);
   const isCountdownInvalid = Number.isNaN(weddingDate.getTime());
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0 });
-  const pixKey = config.pixKey || 'sua-chave-pix@dominio.com';
 
   useEffect(() => {
     if (isCountdownInvalid) return;
@@ -198,12 +206,6 @@ export function App() {
     const interval = window.setInterval(updateCountdown, 1000);
     return () => window.clearInterval(interval);
   }, [isCountdownInvalid, weddingDateTime]);
-
-  const handleCopyPix = async () => {
-    await navigator.clipboard.writeText(pixKey);
-    setPixCopied(true);
-    window.setTimeout(() => setPixCopied(false), 1600);
-  };
 
   const getProductImageUrl = (product: Product) => {
     const customImage = product.imageUrl.trim();
@@ -366,9 +368,16 @@ export function App() {
                 <span className="text-2xl" aria-hidden>
                   {CATEGORY_META[category].icon}
                 </span>
-                <h2 className="flex-1 text-xl font-semibold md:text-2xl">
-                  {CATEGORY_META[category].label}
-                </h2>
+                <div className="flex-1">
+                  <h2 className="text-xl font-semibold md:text-2xl">
+                    {CATEGORY_META[category].label}
+                  </h2>
+                  {CATEGORY_META[category].subtitle && (
+                    <p className="mt-1 text-xs text-brand-mocha/70 md:text-sm">
+                      {CATEGORY_META[category].subtitle}
+                    </p>
+                  )}
+                </div>
                 <span className="rounded-full bg-white/75 px-3 py-1 text-xs tracking-[0.2em] text-brand-mocha shadow-card">
                   {items.length} ITENS
                 </span>
@@ -407,38 +416,6 @@ export function App() {
               </div>
             </section>
           ))}
-
-        <section className="relative overflow-hidden rounded-[44px] bg-gradient-to-br from-white/92 to-brand-cream/70 p-6 shadow-card md:p-10">
-          <div className="pointer-events-none absolute -left-16 top-8 h-40 w-40 rounded-full bg-brand-rose/20 blur-2xl" />
-          <div className="pointer-events-none absolute -right-16 bottom-6 h-40 w-40 rounded-full bg-brand-sand/35 blur-2xl" />
-          <p className="relative text-sm font-medium tracking-[0.08em] text-brand-mocha">
-            Prefere presentear com uma contribuição? Use o PIX abaixo 💛
-          </p>
-
-          <div className="relative mt-5 grid grid-cols-1 gap-6 md:grid-cols-[220px_1fr] md:items-center">
-            <img
-              src={PIX_QR_CODE_URL}
-              alt="QR Code para contribuição via PIX"
-              className="h-[220px] w-[220px] rounded-[28px] bg-white p-3 shadow-card"
-            />
-
-            <div className="space-y-3">
-              <p className="text-sm uppercase tracking-[0.18em] text-brand-mocha">Chave PIX</p>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <code className="rounded-full bg-white px-4 py-3 text-sm text-brand-charcoal shadow-card">
-                  {pixKey}
-                </code>
-                <button
-                  type="button"
-                  onClick={handleCopyPix}
-                  className="rounded-full bg-brand-charcoal px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-black"
-                >
-                  {pixCopied ? 'Chave copiada!' : 'Copiar chave PIX'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       <footer className="px-4 pb-10 text-center text-sm text-brand-mocha/85">
