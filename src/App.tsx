@@ -55,7 +55,7 @@ const TIMELINE_EVENTS = [
     date: '2026',
     title: 'Nosso casamento',
     description:
-      'Depois de meses nos conhecendo melhor, aprendendo um com o outro e fortalecendo nossa união, decidimos dar o próximo passo em direção ao nosso casamento.',
+      'Estamos ansiosos para iniciarmos esse novo capítulo de nossas vidas, e queremos que cada um de vocês continuem a fazer parte da nossa história.',
     imageUrl: noivadoImage,
   },
 ];
