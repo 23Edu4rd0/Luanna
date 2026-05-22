@@ -1,14 +1,12 @@
 import { FormEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { useWeddingConfig } from './shared/hooks';
-import inicioImage from './story/assets/inicio.jpeg';
+import inicio2024Image from './story/assets/inicio-2024.png';
 import crescendoImage from './story/assets/crescendo.jpeg';
 import noivadoImage from './story/assets/noivado.jpeg';
-import casamentoImage from './story/assets/WhatsApp Image 2026-05-12 at 22.39.42.jpeg';
 
-type Category = 'Cozinha' | 'Quarto' | 'Banheiro' | 'Livros pro dev';
+type Category = 'Cozinha' | 'Quarto' | 'Banheiro';
 
 type CategoryMeta = {
-  icon: string;
   label: string;
   subtitle?: string;
 };
@@ -23,17 +21,12 @@ interface Product {
   reservedBy: string;
 }
 
-const CATEGORY_ORDER: Category[] = ['Cozinha', 'Quarto', 'Banheiro', 'Livros pro dev'];
+const CATEGORY_ORDER: Category[] = ['Cozinha', 'Quarto', 'Banheiro'];
 
 const CATEGORY_META: Record<Category, CategoryMeta> = {
-  Cozinha: { icon: '🍳', label: 'Cozinha' },
-  Quarto: { icon: '🛏️', label: 'Quarto' },
-  Banheiro: { icon: '🚿', label: 'Banheiro' },
-  'Livros pro dev': {
-    icon: '📚',
-    label: 'Livros pro dev',
-    subtitle: 'Ajude tbm o cara que fez esse site, que teve todas suas ideias excluidas',
-  },
+  Cozinha: { label: 'Cozinha' },
+  Quarto: { label: 'Quarto' },
+  Banheiro: { label: 'Banheiro' },
 };
 
 const STORAGE_KEY = 'housewarming-gift-reservations-v1';
@@ -42,31 +35,27 @@ const DEFAULT_STORY =
 const TIMELINE_EVENTS = [
   {
     id: 1,
-    date: '2018',
+    date: '2024',
     title: 'Quando tudo começou',
-    description: 'Nos conhecemos e descobrimos, logo nos primeiros dias, uma conexão leve e verdadeira.',
-    imageUrl: inicioImage,
+    description:
+      'Nos conhecemos e com o tempo percebemos que compartilhávamos o mesmo objetivo: servir a Jeová e dar sempre o nosso melhor a Ele. Então decidimos seguir essa caminhada juntos, unidos e apoiando um ao outro.',
+    imageUrl: inicio2024Image,
   },
   {
     id: 2,
-    date: '2020',
-    title: 'Crescemos juntos',
-    description: 'Entre planos e desafios, aprendemos que amor também é cuidado diário e presença.',
+    date: '2025',
+    title: 'O pedido',
+    description:
+      'Depois de meses nos conhecendo melhor, aprendendo um com o outro e fortalecendo nossa união, decidimos dar o próximo passo em direção ao nosso casamento.',
     imageUrl: crescendoImage,
   },
   {
     id: 3,
-    date: '2025',
-    title: 'O pedido',
-    description: 'Com o coração cheio, decidimos dar o próximo passo e dizer sim para sempre.',
-    imageUrl: noivadoImage,
-  },
-  {
-    id: 4,
     date: '2026',
     title: 'Nosso casamento',
-    description: 'Celebramos essa nova etapa com quem fez parte da nossa caminhada até aqui.',
-    imageUrl: casamentoImage,
+    description:
+      'Depois de meses nos conhecendo melhor, aprendendo um com o outro e fortalecendo nossa união, decidimos dar o próximo passo em direção ao nosso casamento.',
+    imageUrl: noivadoImage,
   },
 ];
 const CEREMONY_DETAILS = [
@@ -87,6 +76,12 @@ export function App() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [guestName, setGuestName] = useState('');
   const [reserveError, setReserveError] = useState('');
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Record<Category, boolean>>({
+    Cozinha: false,
+    Quarto: false,
+    Banheiro: false,
+  });
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -128,6 +123,19 @@ export function App() {
     };
 
     loadProducts();
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+
+    const updateViewport = () => {
+      setIsMobileViewport(mediaQuery.matches);
+    };
+
+    updateViewport();
+    mediaQuery.addEventListener('change', updateViewport);
+
+    return () => mediaQuery.removeEventListener('change', updateViewport);
   }, []);
 
   const productsByCategory = useMemo(() => {
@@ -181,7 +189,7 @@ export function App() {
 
   const weddingDate = new Date(weddingDateTime);
   const isCountdownInvalid = Number.isNaN(weddingDate.getTime());
-  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0 });
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     if (isCountdownInvalid) return;
@@ -191,7 +199,7 @@ export function App() {
       const distance = weddingDate.getTime() - now;
 
       if (distance <= 0) {
-        setCountdown({ days: 0, hours: 0, minutes: 0 });
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         return;
       }
 
@@ -199,6 +207,7 @@ export function App() {
         days: Math.floor(distance / (1000 * 60 * 60 * 24)),
         hours: Math.floor((distance / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((distance / (1000 * 60)) % 60),
+        seconds: Math.floor((distance / 1000) % 60),
       });
     };
 
@@ -226,6 +235,7 @@ export function App() {
     { label: 'Dias', value: countdown.days },
     { label: 'Horas', value: countdown.hours },
     { label: 'Minutos', value: countdown.minutes },
+    { label: 'Segundos', value: countdown.seconds },
   ];
 
   return (
@@ -250,16 +260,22 @@ export function App() {
             {weddingDateLabel}
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 md:gap-3">
-            {countdownUnits.map((unit) => (
-              <div
-                key={unit.label}
-                className="min-w-32 rounded-full border border-white/90 bg-gradient-to-b from-white/90 to-white/65 px-6 py-3 shadow-card backdrop-blur-sm"
-              >
-                <p className="text-2xl font-semibold">{String(unit.value).padStart(2, '0')}</p>
-                <p className="text-[11px] uppercase tracking-[0.25em] text-brand-mocha">{unit.label}</p>
-              </div>
-            ))}
+          <div className="mx-auto mt-8 text-center text-brand-charcoal">
+            <p className="text-[10px] uppercase tracking-[0.45em] text-brand-mocha/65">
+              Contagem regressiva
+            </p>
+            <div className="mt-4 flex flex-nowrap items-end justify-center gap-x-3 overflow-x-auto pb-1 md:gap-x-8 md:overflow-visible md:pb-0">
+              {countdownUnits.map((unit) => (
+                <div key={unit.label} className="flex min-w-16 flex-col items-center md:min-w-20">
+                  <span className="text-[1.6rem] font-medium leading-none tracking-tight text-brand-charcoal md:text-5xl">
+                    {String(unit.value).padStart(2, '0')}
+                  </span>
+                  <span className="mt-1 text-[9px] uppercase tracking-[0.24em] text-brand-mocha/70 md:text-[11px] md:tracking-[0.3em]">
+                    {unit.label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </header>
@@ -298,8 +314,8 @@ export function App() {
                     </span>
                   </div>
 
-                  <article className="border-l border-brand-sand/50 pl-5 md:border-none md:pl-0">
-                    <div className="mx-auto aspect-square w-full max-w-[270px] overflow-hidden rounded-full border border-white/90 bg-brand-cream/30 p-1.5 shadow-[0_12px_30px_rgba(34,29,24,0.12)] md:max-w-[310px]">
+                  <article className="md:border-none md:pl-0">
+                    <div className="mx-auto aspect-square w-full max-w-[290px] overflow-hidden rounded-full border border-white/90 bg-brand-cream/30 p-1.5 shadow-[0_12px_30px_rgba(34,29,24,0.12)] md:max-w-[310px]">
                       <img
                         src={event.imageUrl}
                         alt={event.title}
@@ -308,9 +324,11 @@ export function App() {
                         }`}
                       />
                     </div>
-                    <p className="mt-4 text-xs uppercase tracking-[0.24em] text-brand-mocha">{event.date}</p>
-                    <h3 className="mt-1 text-xl font-semibold">{event.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-brand-mocha md:text-base">
+                    <p className="mt-4 text-center text-xs uppercase tracking-[0.24em] text-brand-mocha md:text-left">
+                      {event.date}
+                    </p>
+                    <h3 className="mt-1 text-center text-xl font-semibold md:text-left">{event.title}</h3>
+                    <p className="mt-2 text-center text-sm leading-relaxed text-brand-mocha md:text-left md:text-base">
                       {event.description}
                     </p>
                   </article>
@@ -321,30 +339,49 @@ export function App() {
         </section>
 
         <section className="mx-auto max-w-4xl space-y-5 py-1">
-          <h2 className="text-center text-2xl font-semibold md:text-3xl">
-            Informações da festinha de casa nova
-          </h2>
-          <p className="text-center text-sm leading-relaxed text-brand-mocha md:text-base">
-            Vai ser um encontro íntimo e cheio de carinho. Aqui estão os dados para você chegar
-            tranquilo(a).
-          </p>
+          <div className="text-center">
+            <p className="text-[10px] uppercase tracking-[0.42em] text-brand-mocha/65">
+              Convite do local
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold md:text-3xl">
+              Informações da festinha de casa nova
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-brand-mocha md:text-base">
+              Vai ser um encontro íntimo e cheio de carinho. Aqui estão os dados para você chegar
+              tranquilo(a).
+            </p>
+          </div>
 
-          <dl className="mx-auto max-w-3xl space-y-1">
-            {CEREMONY_DETAILS.map((detail) => (
-              <div key={detail.label} className="group py-4">
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-[170px_1fr] md:items-center">
-                  <dt className="text-[11px] uppercase tracking-[0.24em] text-brand-mocha/85">{detail.label}</dt>
-                  <dd className="text-lg leading-snug text-brand-charcoal md:text-[1.2rem]">
-                    {detail.value}
-                  </dd>
+          <div className="mx-auto max-w-3xl rounded-[28px] border border-white/60 bg-white/55 px-5 py-6 shadow-card backdrop-blur-sm md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0 md:shadow-none md:backdrop-blur-0">
+            <dl className="space-y-1">
+              {CEREMONY_DETAILS.map((detail) => (
+                <div key={detail.label} className="group py-4">
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-[170px_1fr] md:items-center">
+                    <dt className="text-[11px] uppercase tracking-[0.24em] text-brand-mocha/85">
+                      {detail.label}
+                    </dt>
+                    <dd className="text-lg leading-snug text-brand-charcoal md:text-[1.2rem]">
+                      {detail.value}
+                    </dd>
+                  </div>
+                  <div className="mt-3 h-px w-full bg-gradient-to-r from-brand-sand/20 via-brand-sand/70 to-brand-sand/20 transition group-hover:via-brand-wood/70" />
                 </div>
-                <div className="mt-3 h-px w-full bg-gradient-to-r from-brand-sand/20 via-brand-sand/70 to-brand-sand/20 transition group-hover:via-brand-wood/70" />
-              </div>
-            ))}
-          </dl>
+              ))}
+            </dl>
+          </div>
 
           <p className="pt-2 text-center text-sm italic text-brand-mocha">
             Dica especial: chegue com antecedência para aproveitar cada instante com a gente.
+          </p>
+        </section>
+
+        <section className="mx-auto max-w-4xl space-y-4 py-1 text-center">
+          <p className="text-[10px] uppercase tracking-[0.42em] text-brand-mocha/65">
+            Sugestões de presentes
+          </p>
+          <h2 className="text-2xl font-semibold md:text-3xl">Escolha com carinho o que quiser trazer</h2>
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-brand-mocha md:text-base">
+            Aqui estão algumas ideias para participar desse novo lar com a gente.
           </p>
         </section>
 
@@ -365,9 +402,6 @@ export function App() {
           productsByCategory.map(({ category, items }) => (
             <section key={category} className="space-y-4">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-2xl" aria-hidden>
-                  {CATEGORY_META[category].icon}
-                </span>
                 <div className="flex-1">
                   <h2 className="text-xl font-semibold md:text-2xl">
                     {CATEGORY_META[category].label}
@@ -384,7 +418,7 @@ export function App() {
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {items.map((item) => (
+                {(isMobileViewport && !expandedCategories[category] ? items.slice(0, 10) : items).map((item) => (
                   <article
                     key={item.id}
                     onClick={() => !item.reserved && setSelectedProduct(item)}
@@ -414,6 +448,40 @@ export function App() {
                   </article>
                 ))}
               </div>
+
+              {isMobileViewport && items.length > 10 && !expandedCategories[category] && (
+                <div className="flex justify-center pt-2 md:hidden">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setExpandedCategories((current) => ({
+                        ...current,
+                        [category]: true,
+                      }))
+                    }
+                    className="inline-flex items-center gap-2 rounded-full border border-brand-sand/55 px-4 py-2 text-xs uppercase tracking-[0.22em] text-brand-mocha transition hover:border-brand-wood/70 hover:text-brand-charcoal"
+                  >
+                    Ver mais
+                  </button>
+                </div>
+              )}
+
+              {isMobileViewport && items.length > 10 && expandedCategories[category] && (
+                <div className="flex justify-center pt-2 md:hidden">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setExpandedCategories((current) => ({
+                        ...current,
+                        [category]: false,
+                      }))
+                    }
+                    className="inline-flex items-center gap-2 rounded-full border border-brand-sand/55 px-4 py-2 text-xs uppercase tracking-[0.22em] text-brand-mocha transition hover:border-brand-wood/70 hover:text-brand-charcoal"
+                  >
+                    Ver menos
+                  </button>
+                </div>
+              )}
             </section>
           ))}
       </main>
