@@ -215,6 +215,20 @@ app.get('/api/health', (ctx) => {
 });
 
 // Serve frontend in production
+// Serve admin path as SPA (return index.html) to avoid 404 on direct /admin requests
+app.get('/admin', async (ctx) => {
+  const html = await getIndexHtmlWithConfig();
+  ctx.header('Content-Type', 'text/html; charset=utf-8');
+  return ctx.html(html);
+});
+
+app.get('/admin/*', async (ctx) => {
+  const html = await getIndexHtmlWithConfig();
+  ctx.header('Content-Type', 'text/html; charset=utf-8');
+  return ctx.html(html);
+});
+
+// Serve other static files from dist
 app.use('/*', serveStatic({ root: './dist' }));
 
 // ============================================

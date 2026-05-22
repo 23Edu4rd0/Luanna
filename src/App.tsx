@@ -30,6 +30,7 @@ const CATEGORY_META: Record<Category, CategoryMeta> = {
 };
 
 const STORAGE_KEY = 'housewarming-gift-reservations-v1';
+const ADMIN_PASSWORD = 'admin123';
 const DEFAULT_STORY =
   'Entre encontros inesperados e sonhos compartilhados, construímos uma história de amor, parceria e fé, tendo Jeová como alicerce da nossa união. Hoje iniciamos uma nova fase ao lado das pessoas que amamos e do nosso novo lar, com gratidão no coração.';
 const TIMELINE_EVENTS = [
@@ -64,9 +65,31 @@ const CEREMONY_DETAILS = [
   { label: 'Endereço', value: 'Rua do Capitão, 490, Del Rey' },
 ];
 
+const RICKROLL_NAME = 'joao pedro rabelo';
+const RICKROLL_URL = 'https://music.youtube.com/watch?v=dQw4w9WgXcQ';
+
 const FALLBACK_IMAGE_URL =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23d6ccb6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23292929' font-family='Inter, sans-serif' font-size='28'%3EImagem do produto%3C/text%3E%3C/svg%3E";
 const PRODUCT_IMAGE_BASE_PATH = '/images/products';
+
+const isRickrollName = (name: string) => name.trim().toLowerCase() === RICKROLL_NAME;
+const isAdminPath = () =>
+  window.location.pathname === '/admin' ||
+  window.location.hash === '#/admin' ||
+  window.location.hash === '#!/admin';
+
+const loadReservationMap = () => {
+  const storedReservations = localStorage.getItem(STORAGE_KEY);
+  if (!storedReservations) return {} as Record<string, string>;
+  try {
+    return JSON.parse(storedReservations) as Record<string, string>;
+  } catch {
+    localStorage.removeItem(STORAGE_KEY);
+    return {} as Record<string, string>;
+  }
+};
+
+// visit tracking removed; admin UI focuses only on reservations
 
 export function App() {
   const { config } = useWeddingConfig();
@@ -77,6 +100,9 @@ export function App() {
   const [guestName, setGuestName] = useState('');
   const [reserveError, setReserveError] = useState('');
   const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminError, setAdminError] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<Record<Category, boolean>>({
     Cozinha: false,
     Quarto: false,
@@ -138,6 +164,8 @@ export function App() {
     return () => mediaQuery.removeEventListener('change', updateViewport);
   }, []);
 
+  // visit counter removed — admin area focuses only on reservations
+
   const productsByCategory = useMemo(() => {
     return CATEGORY_ORDER.map((category) => ({
       category,
@@ -148,6 +176,38 @@ export function App() {
     }));
   }, [products]);
 
+  const adminReservations = useMemo(
+    () =>
+      products
+        .filter((product) => product.reserved)
+        .map((product) => ({
+          productName: product.name,
+          reservedBy: product.reservedBy,
+        })),
+    [products]
+  );
+
+  const reservationMap = useMemo(() => {
+    return products.reduce<Record<string, string>>((acc, product) => {
+      if (product.reserved && product.reservedBy) {
+        acc[product.id] = product.reservedBy;
+      }
+      return acc;
+    }, {});
+  }, [products]);
+
+  const handleAdminLogin = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (adminPassword === ADMIN_PASSWORD) {
+      setIsAdminAuthenticated(true);
+      setAdminError('');
+      return;
+    }
+
+    setAdminError('Senha inválida.');
+  };
+
   const handleReserve = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedProduct) return;
@@ -155,6 +215,11 @@ export function App() {
     const fullName = guestName.trim();
     if (!fullName) {
       setReserveError('Informe seu nome completo.');
+      return;
+    }
+
+    if (isRickrollName(fullName)) {
+      window.location.href = RICKROLL_URL;
       return;
     }
 
@@ -237,6 +302,82 @@ export function App() {
     { label: 'Minutos', value: countdown.minutes },
     { label: 'Segundos', value: countdown.seconds },
   ];
+
+  if (isAdminPath()) {
+    return (
+      <div className="min-h-screen bg-brand-ivory px-4 py-10 text-brand-charcoal">
+        <div className="mx-auto max-w-4xl rounded-[32px] border border-white/70 bg-white/80 p-6 shadow-card backdrop-blur-sm md:p-8">
+          <div className="mb-6">
+            <p className="text-[10px] uppercase tracking-[0.42em] text-brand-mocha/65">Área restrita</p>
+            <h1 className="mt-3 text-3xl font-semibold md:text-4xl">Painel administrativo</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-brand-mocha md:text-base">
+              Relatório simples de reservas. O acesso não aparece em botão no site.
+            </p>
+          </div>
+
+          {!isAdminAuthenticated ? (
+            <form onSubmit={handleAdminLogin} className="space-y-3">
+              <label className="block text-sm text-brand-mocha">
+                Senha de acesso
+                <input
+                  type="password"
+                  value={adminPassword}
+                  onChange={(event) => {
+                    setAdminPassword(event.target.value);
+                    setAdminError('');
+                  }}
+                  className="mt-2 w-full rounded-full border border-brand-sand bg-brand-cream/30 px-4 py-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-mocha"
+                  placeholder="Digite a senha"
+                />
+              </label>
+
+              {adminError && (
+                <p className="rounded-xl border border-red-300/30 bg-red-900/30 px-3 py-2 text-sm text-red-100">
+                  {adminError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="rounded-full bg-brand-charcoal px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-black"
+              >
+                Entrar
+              </button>
+            </form>
+          ) : (
+            <div className="space-y-6">
+              <section className="grid gap-4 md:grid-cols-1">
+                <article className="rounded-[24px] border border-brand-sand/40 bg-brand-cream/30 p-4">
+                  <p className="text-xs uppercase tracking-[0.24em] text-brand-mocha/70">Reservas</p>
+                  <p className="mt-2 text-3xl font-semibold">{adminReservations.length}</p>
+                  <p className="mt-2 text-sm text-brand-mocha">Itens reservados até agora.</p>
+                </article>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-semibold">Quem reservou o quê</h2>
+                {adminReservations.length > 0 ? (
+                  <div className="mt-4 space-y-3">
+                    {adminReservations.map((reservation) => (
+                      <div
+                        key={`${reservation.productName}-${reservation.reservedBy}`}
+                        className="rounded-[22px] border border-brand-sand/40 bg-white/80 px-4 py-3"
+                      >
+                        <p className="font-medium">{reservation.productName}</p>
+                        <p className="text-sm text-brand-mocha">Reservado por {reservation.reservedBy}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-3 text-sm text-brand-mocha">Ainda não há reservas registradas.</p>
+                )}
+              </section>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-brand-ivory text-brand-charcoal">
