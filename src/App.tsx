@@ -181,6 +181,7 @@ export function App() {
       products
         .filter((product) => product.reserved)
         .map((product) => ({
+          id: product.id,
           productName: product.name,
           reservedBy: product.reservedBy,
         })),
@@ -206,6 +207,29 @@ export function App() {
     }
 
     setAdminError('Senha inválida.');
+  };
+
+  const handleAdminCancel = (productId: string) => {
+    if (!confirm('Tem certeza que deseja cancelar esta reserva?')) return;
+
+    const updated = products.map((p) =>
+      p.id === productId
+        ? {
+            ...p,
+            reserved: false,
+            reservedBy: '',
+          }
+        : p
+    );
+
+    setProducts(updated);
+
+    const nextReservations = updated.reduce<Record<string, string>>((acc, product) => {
+      if (product.reserved && product.reservedBy) acc[product.id] = product.reservedBy;
+      return acc;
+    }, {});
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextReservations));
   };
 
   const handleReserve = (event: FormEvent<HTMLFormElement>) => {
@@ -360,11 +384,22 @@ export function App() {
                   <div className="mt-4 space-y-3">
                     {adminReservations.map((reservation) => (
                       <div
-                        key={`${reservation.productName}-${reservation.reservedBy}`}
-                        className="rounded-[22px] border border-brand-sand/40 bg-white/80 px-4 py-3"
+                        key={reservation.id}
+                        className="rounded-[22px] border border-brand-sand/40 bg-white/80 px-4 py-3 flex items-center justify-between"
                       >
-                        <p className="font-medium">{reservation.productName}</p>
-                        <p className="text-sm text-brand-mocha">Reservado por {reservation.reservedBy}</p>
+                        <div>
+                          <p className="font-medium">{reservation.productName}</p>
+                          <p className="text-sm text-brand-mocha">Reservado por {reservation.reservedBy}</p>
+                        </div>
+                        <div>
+                          <button
+                            type="button"
+                            onClick={() => handleAdminCancel(reservation.id)}
+                            className="ml-4 inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50/70 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-100"
+                          >
+                            Cancelar reserva
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
