@@ -22,8 +22,6 @@ export type GiftRow = {
 	id: number | string;
 	category: string;
 	name: string;
-	description: string | null;
-	price: number | string;
 	image_url: string | null;
 	reserved: boolean;
 	reserved_by: string | null;
@@ -33,7 +31,6 @@ export type GiftRow = {
 export type CommentRow = {
 	id: number | string;
 	guest_name: string;
-	guest_email: string | null;
 	message: string;
 	created_at: string;
 };
@@ -55,8 +52,6 @@ export function mapGiftRow(row: GiftRow): Gift {
 		id: Number(row.id),
 		category: row.category,
 		name: row.name,
-		description: row.description ?? '',
-		price: typeof row.price === 'string' ? Number(row.price) : row.price,
 		imageUrl: row.image_url ?? '',
 		reserved: Boolean(row.reserved),
 		reservedBy: row.reserved_by ?? undefined,
@@ -67,7 +62,6 @@ export function mapCommentRow(row: CommentRow): Comment {
 	return {
 		id: Number(row.id),
 		guestName: row.guest_name,
-		guestEmail: row.guest_email ?? undefined,
 		message: row.message,
 		createdAt: row.created_at,
 	};
@@ -77,8 +71,6 @@ export function toGiftInsertRow(gift: Omit<Gift, 'id'>) {
 	return {
 		category: gift.category,
 		name: gift.name,
-		description: gift.description || null,
-		price: gift.price,
 		image_url: gift.imageUrl || null,
 		reserved: gift.reserved,
 		reserved_by: gift.reservedBy || null,
@@ -110,8 +102,8 @@ export async function insertGiftCatalog(gifts: Omit<Gift, 'id'>[]) {
 	await db.begin(async (transaction) => {
 		for (const gift of gifts) {
 			await transaction`
-				insert into gifts (category, name, description, price, image_url, reserved, reserved_by)
-				values (${gift.category}, ${gift.name}, ${gift.description || null}, ${gift.price}, ${gift.imageUrl || null}, ${gift.reserved}, ${gift.reservedBy || null})
+				insert into gifts (category, name, image_url, reserved, reserved_by)
+				values (${gift.category}, ${gift.name}, ${gift.imageUrl || null}, ${gift.reserved}, ${gift.reservedBy || null})
 			`;
 		}
 	});
@@ -119,8 +111,7 @@ export async function insertGiftCatalog(gifts: Omit<Gift, 'id'>[]) {
 
 export async function reserveGift(
 	giftId: number,
-	guestName: string,
-	guestEmail?: string
+	guestName: string
 ): Promise<Gift | undefined> {
 	return db.begin(async (transaction) => {
 		const rows = await transaction<GiftRow[]>`
@@ -135,8 +126,8 @@ export async function reserveGift(
 		}
 
 		await transaction`
-			insert into gift_reservations (gift_id, guest_name, guest_email)
-			values (${giftId}, ${guestName}, ${guestEmail || null})
+			insert into gift_reservations (gift_id, guest_name)
+			values (${giftId}, ${guestName})
 		`;
 
 		return mapGiftRow(rows[0]);
@@ -169,12 +160,11 @@ export async function listComments(): Promise<Comment[]> {
 
 export async function createComment(
 	guestName: string,
-	message: string,
-	guestEmail?: string
+	message: string
 ): Promise<Comment> {
 	const rows = await db<CommentRow[]>`
-		insert into comments (guest_name, guest_email, message)
-		values (${guestName}, ${guestEmail || null}, ${message})
+		insert into comments (guest_name, message)
+		values (${guestName}, ${message})
 		returning *
 	`;
 

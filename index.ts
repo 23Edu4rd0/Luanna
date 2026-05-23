@@ -121,7 +121,7 @@ app.get('/api/gifts/:id', (ctx) => {
 app.post('/api/gifts/:id/reserve', async (ctx) => {
   try {
     const giftId = parseInt(ctx.req.param('id'));
-    const { guestName, guestEmail } = await ctx.req.json();
+    const { guestName } = await ctx.req.json();
 
     if (!guestName || !guestName.trim()) {
       return ctx.json({ error: 'Guest name is required' }, 400);
@@ -137,7 +137,7 @@ app.post('/api/gifts/:id/reserve', async (ctx) => {
       return ctx.json({ error: 'Gift is already reserved' }, 409);
     }
 
-	const updatedGift = await reserveGiftById(giftId, guestName, guestEmail);
+	const updatedGift = await reserveGiftById(giftId, guestName);
 
 	if (!updatedGift) {
       return ctx.json({ error: 'Gift is already reserved' }, 409);
@@ -185,7 +185,7 @@ app.get('/api/comments', (ctx) => {
 // POST: Create a new comment
 app.post('/api/comments', async (ctx) => {
   try {
-    const { guestName, message, guestEmail } = await ctx.req.json();
+    const { guestName, message } = await ctx.req.json();
 
     if (!guestName || !guestName.trim()) {
       return ctx.json({ error: 'Guest name is required' }, 400);
@@ -195,7 +195,7 @@ app.post('/api/comments', async (ctx) => {
       return ctx.json({ error: 'Message must be 1-500 characters' }, 400);
     }
 
-	return ctx.json(await createComment(guestName, message, guestEmail), 201);
+	return ctx.json(await createComment(guestName, message), 201);
   } catch (error) {
     console.error('Error creating comment:', error);
     return ctx.json({ error: 'Failed to create comment' }, 500);

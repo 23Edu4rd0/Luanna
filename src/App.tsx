@@ -11,8 +11,6 @@ interface Gift {
   id: number;
   category: Category;
   name: string;
-  description: string;
-  price: number;
   imageUrl: string;
   reserved: boolean;
   reservedBy?: string;
