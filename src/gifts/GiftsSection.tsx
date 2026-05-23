@@ -35,7 +35,7 @@ export function GiftsSection() {
       ];
     }),
     ...gifts
-      .filter((gift) => !GIFT_CATEGORY_ORDER.includes(gift.category))
+      .filter((gift) => !GIFT_CATEGORY_ORDER.some((category) => category === gift.category))
       .sort((a, b) => Number(a.reserved) - Number(b.reserved)),
   ];
 

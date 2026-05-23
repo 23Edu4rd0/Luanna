@@ -34,8 +34,8 @@ export function useGifts() {
 
       if (!response.ok) throw new Error('Failed to reserve gift');
       
-      const updatedGift = await response.json();
-      setGifts(gifts.map(g => g.id === giftId ? updatedGift : g));
+      await response.json();
+      await fetchGifts();
       return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to reserve gift');

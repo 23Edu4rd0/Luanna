@@ -6,20 +6,22 @@ import noivadoImage from './story/assets/noivado.jpeg';
 
 type Category = 'Cozinha' | 'Quarto' | 'Banheiro';
 
+// Shape returned directly from /api/gifts (Supabase)
+interface Gift {
+  id: number;
+  category: Category;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  reserved: boolean;
+  reservedBy?: string;
+}
+
 type CategoryMeta = {
   label: string;
   subtitle?: string;
 };
-
-interface Product {
-  id: string;
-  category: Category;
-  name: string;
-  referenceUrl: string;
-  imageUrl: string;
-  reserved: boolean;
-  reservedBy: string;
-}
 
 const CATEGORY_ORDER: Category[] = ['Cozinha', 'Quarto', 'Banheiro'];
 
@@ -29,7 +31,6 @@ const CATEGORY_META: Record<Category, CategoryMeta> = {
   Banheiro: { label: 'Banheiro' },
 };
 
-const STORAGE_KEY = 'housewarming-gift-reservations-v1';
 const ADMIN_PASSWORD = 'admin123';
 const DEFAULT_STORY =
   'Entre encontros inesperados e sonhos compartilhados, construímos uma história de amor, parceria e fé, tendo Jeová como alicerce da nossa união. Hoje iniciamos uma nova fase ao lado das pessoas que amamos e do nosso novo lar, com gratidão no coração.';
@@ -70,7 +71,6 @@ const RICKROLL_URL = 'https://music.youtube.com/watch?v=dQw4w9WgXcQ';
 
 const FALLBACK_IMAGE_URL =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23d6ccb6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23292929' font-family='Inter, sans-serif' font-size='28'%3EImagem do produto%3C/text%3E%3C/svg%3E";
-const PRODUCT_IMAGE_BASE_PATH = '/images/products';
 
 const isRickrollName = (name: string) => name.trim().toLowerCase() === RICKROLL_NAME;
 const isAdminPath = () =>
@@ -78,25 +78,14 @@ const isAdminPath = () =>
   window.location.hash === '#/admin' ||
   window.location.hash === '#!/admin';
 
-const loadReservationMap = () => {
-  const storedReservations = localStorage.getItem(STORAGE_KEY);
-  if (!storedReservations) return {} as Record<string, string>;
-  try {
-    return JSON.parse(storedReservations) as Record<string, string>;
-  } catch {
-    localStorage.removeItem(STORAGE_KEY);
-    return {} as Record<string, string>;
-  }
-};
-
 // visit tracking removed; admin UI focuses only on reservations
 
 export function App() {
   const { config } = useWeddingConfig();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [gifts, setGifts] = useState<Gift[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
   const [guestName, setGuestName] = useState('');
   const [reserveError, setReserveError] = useState('');
   const [isMobileViewport, setIsMobileViewport] = useState(false);
@@ -109,46 +98,29 @@ export function App() {
     Banheiro: false,
   });
 
+  const loadGifts = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/gifts', { cache: 'no-store' });
+      if (!response.ok) throw new Error('Não foi possível carregar os presentes.');
+      const data = (await response.json()) as Gift[];
+      setGifts(data);
+    } catch {
+      setLoadError('Falha ao carregar os presentes do Supabase.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const response = await fetch('/products.json', { cache: 'no-store' });
-        if (!response.ok) {
-          throw new Error('Não foi possível carregar os itens.');
-        }
-
-        const data = (await response.json()) as Product[];
-        const storedReservations = localStorage.getItem(STORAGE_KEY);
-        let reservationMap: Record<string, string> = {};
-
-        if (storedReservations) {
-          try {
-            reservationMap = JSON.parse(storedReservations) as Record<string, string>;
-          } catch {
-            localStorage.removeItem(STORAGE_KEY);
-          }
-        }
-
-        const merged = data.map((product) => {
-          const storedName = reservationMap[product.id];
-          if (!storedName) return product;
-
-          return {
-            ...product,
-            reserved: true,
-            reservedBy: storedName,
-          };
-        });
-
-        setProducts(merged);
-      } catch {
-        setLoadError('Falha ao carregar os produtos.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProducts();
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+    } catch (e) {
+      console.error(e);
+    }
+    loadGifts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -166,36 +138,27 @@ export function App() {
 
   // visit counter removed — admin area focuses only on reservations
 
-  const productsByCategory = useMemo(() => {
+  const giftsByCategory = useMemo(() => {
     return CATEGORY_ORDER.map((category) => ({
       category,
       items: [
-        ...products.filter((product) => product.category === category && !product.reserved),
-        ...products.filter((product) => product.category === category && product.reserved),
+        ...gifts.filter((g) => g.category === category && !g.reserved),
+        ...gifts.filter((g) => g.category === category && g.reserved),
       ],
     }));
-  }, [products]);
+  }, [gifts]);
 
   const adminReservations = useMemo(
     () =>
-      products
-        .filter((product) => product.reserved)
-        .map((product) => ({
-          id: product.id,
-          productName: product.name,
-          reservedBy: product.reservedBy,
+      gifts
+        .filter((g) => g.reserved)
+        .map((g) => ({
+          id: g.id,
+          giftName: g.name,
+          reservedBy: g.reservedBy ?? '',
         })),
-    [products]
+    [gifts]
   );
-
-  const reservationMap = useMemo(() => {
-    return products.reduce<Record<string, string>>((acc, product) => {
-      if (product.reserved && product.reservedBy) {
-        acc[product.id] = product.reservedBy;
-      }
-      return acc;
-    }, {});
-  }, [products]);
 
   const handleAdminLogin = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -209,32 +172,29 @@ export function App() {
     setAdminError('Senha inválida.');
   };
 
-  const handleAdminCancel = (productId: string) => {
+  const handleAdminCancel = (giftId: number) => {
     if (!confirm('Tem certeza que deseja cancelar esta reserva?')) return;
 
-    const updated = products.map((p) =>
-      p.id === productId
-        ? {
-            ...p,
-            reserved: false,
-            reservedBy: '',
-          }
-        : p
-    );
-
-    setProducts(updated);
-
-    const nextReservations = updated.reduce<Record<string, string>>((acc, product) => {
-      if (product.reserved && product.reservedBy) acc[product.id] = product.reservedBy;
-      return acc;
-    }, {});
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextReservations));
+    fetch(`/api/gifts/${giftId}/unreserve`, { method: 'POST' })
+      .then((response) => {
+        if (!response.ok) throw new Error('Failed to cancel reservation');
+        return response.json();
+      })
+      .then(() => {
+        setGifts((current) =>
+          current.map((g) =>
+            g.id === giftId ? { ...g, reserved: false, reservedBy: undefined } : g
+          )
+        );
+      })
+      .catch(() => {
+        alert('Não foi possível cancelar a reserva.');
+      });
   };
 
   const handleReserve = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!selectedProduct) return;
+    if (!selectedGift) return;
 
     const fullName = guestName.trim();
     if (!fullName) {
@@ -247,29 +207,30 @@ export function App() {
       return;
     }
 
-    const updatedProducts = products.map((product) =>
-      product.id === selectedProduct.id
-        ? {
-            ...product,
-            reserved: true,
-            reservedBy: fullName,
-          }
-        : product
-    );
-
-    setProducts(updatedProducts);
-
-    const nextReservations = updatedProducts.reduce<Record<string, string>>((acc, product) => {
-      if (product.reserved && product.reservedBy) {
-        acc[product.id] = product.reservedBy;
-      }
-      return acc;
-    }, {});
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextReservations));
-    setSelectedProduct(null);
-    setGuestName('');
-    setReserveError('');
+    fetch(`/api/gifts/${selectedGift.id}/reserve`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ guestName: fullName }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error('Failed to reserve gift');
+        return response.json();
+      })
+      .then((updatedGift: Gift) => {
+        setGifts((current) =>
+          current.map((g) =>
+            g.id === selectedGift.id
+              ? { ...g, reserved: updatedGift.reserved, reservedBy: updatedGift.reservedBy ?? fullName }
+              : g
+          )
+        );
+        setSelectedGift(null);
+        setGuestName('');
+        setReserveError('');
+      })
+      .catch(() => {
+        setReserveError('Não foi possível salvar a reserva. Tente novamente.');
+      });
   };
 
   const weddingDateTime = config.weddingDate.includes('T')
@@ -305,11 +266,7 @@ export function App() {
     return () => window.clearInterval(interval);
   }, [isCountdownInvalid, weddingDateTime]);
 
-  const getProductImageUrl = (product: Product) => {
-    const customImage = product.imageUrl.trim();
-    if (customImage) return customImage;
-    return `${PRODUCT_IMAGE_BASE_PATH}/${product.id}.jpg`;
-  };
+  const getGiftImageUrl = (gift: Gift) => gift.imageUrl?.trim() || FALLBACK_IMAGE_URL;
 
   const handleImageFallback = (event: SyntheticEvent<HTMLImageElement>) => {
     if (event.currentTarget.src !== FALLBACK_IMAGE_URL) {
@@ -388,7 +345,7 @@ export function App() {
                         className="rounded-[22px] border border-brand-sand/40 bg-white/80 px-4 py-3 flex items-center justify-between"
                       >
                         <div>
-                          <p className="font-medium">{reservation.productName}</p>
+                          <p className="font-medium">{reservation.giftName}</p>
                           <p className="text-sm text-brand-mocha">Reservado por {reservation.reservedBy}</p>
                         </div>
                         <div>
@@ -575,7 +532,7 @@ export function App() {
 
         {!loading &&
           !loadError &&
-          productsByCategory.map(({ category, items }) => (
+          giftsByCategory.map(({ category, items }) => (
             <section key={category} className="space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex-1">
@@ -597,7 +554,7 @@ export function App() {
                 {(isMobileViewport && !expandedCategories[category] ? items.slice(0, 10) : items).map((item) => (
                   <article
                     key={item.id}
-                    onClick={() => !item.reserved && setSelectedProduct(item)}
+                    onClick={() => !item.reserved && setSelectedGift(item)}
                     className={`overflow-hidden rounded-[32px] border p-4 shadow-card backdrop-blur-sm transition ${
                       item.reserved
                         ? 'cursor-default border-brand-beige/70 bg-slate-100/70'
@@ -606,7 +563,7 @@ export function App() {
                   >
                     <div className="relative">
                       <img
-                        src={getProductImageUrl(item)}
+                        src={getGiftImageUrl(item)}
                         alt={item.name}
                         className={`h-44 w-full rounded-[22px] object-cover ${
                           item.reserved ? 'grayscale opacity-80' : ''
@@ -666,25 +623,25 @@ export function App() {
         <p>Com amor, {config.coupleNames}</p>
       </footer>
 
-      {selectedProduct && (
+      {selectedGift && (
         <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
           <div
             className="absolute inset-0 bg-black/70"
             onClick={() => {
-              setSelectedProduct(null);
+              setSelectedGift(null);
               setReserveError('');
             }}
           />
 
           <div className="relative z-10 w-full max-w-lg rounded-[32px] bg-white/96 p-5 shadow-card md:p-6">
             <img
-              src={getProductImageUrl(selectedProduct)}
-              alt={selectedProduct.name}
+              src={getGiftImageUrl(selectedGift)}
+              alt={selectedGift.name}
               className="h-52 w-full rounded-[24px] object-cover"
               onError={handleImageFallback}
             />
 
-            <h3 className="mt-4 text-xl font-semibold text-brand-charcoal">{selectedProduct.name}</h3>
+            <h3 className="mt-4 text-xl font-semibold text-brand-charcoal">{selectedGift.name}</h3>
 
             <form onSubmit={handleReserve} className="mt-5 space-y-3">
               <label className="block text-sm text-brand-mocha">

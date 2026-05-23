@@ -63,7 +63,7 @@ bun run start
 
 - **Frontend**: React 19 + TypeScript + Tailwind CSS 4
 - **Backend**: Hono + Bun (no Node.js)
-- **Database**: SQLite (via bun:sqlite)
+- **Database**: Direct Postgres connection to Supabase
 - **Build**: Vite
 - **Icons**: Lucide React
 
@@ -105,11 +105,15 @@ All sections are optimized for mobile first with responsive breakpoints:
 
 ## 🔐 Database
 
-SQLite database stored in `data/wedding.db` with tables for:
+Postgres tables used by the backend:
 - gifts (with PIX keys)
 - gift_reservations (audit trail)
 - comments (guest messages)
 - timeline_events (story milestones)
+
+Required environment variables:
+- `DATABASE_URL`
+- `DIRECT_URL` for direct DB tooling or migrations
 
 ## 🎯 Next Steps
 
@@ -161,7 +165,7 @@ A: As many as you want! Recommended: 4-8
 A: Currently no, but you can add this feature
 
 **Q: How do I back up the database?**  
-A: Copy `data/wedding.db` to a safe location
+A: Use direct Postgres backups or Supabase export tools
 
 **Q: Can I host this on a subdomain?**  
 A: Yes, configure your domain provider accordingly

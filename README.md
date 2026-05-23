@@ -1,6 +1,6 @@
 # 💍 Wedding Website - Luanna & Wendell
 
-A modern, minimalist, and delicate wedding website built with React, TypeScript, Tailwind CSS, and Bun + SQLite.
+A modern, minimalist, and delicate wedding website built with React, TypeScript, Tailwind CSS, Bun, and direct Postgres on Supabase.
 
 ## Features
 
@@ -16,7 +16,7 @@ A modern, minimalist, and delicate wedding website built with React, TypeScript,
 - **Language**: TypeScript
 - **Frontend**: React 19 + Tailwind CSS 4
 - **Backend**: Hono + Bun native HTTP server
-- **Database**: SQLite via bun:sqlite
+- **Database**: Direct Postgres connection to Supabase
 - **Build**: Vite
 
 ## Quick Start
@@ -27,13 +27,20 @@ A modern, minimalist, and delicate wedding website built with React, TypeScript,
 bun install
 ```
 
-### 2. Set Up the Database
+### 2. Set Up the Database Connection
+
+Set these environment variables in `.env`:
+
+- `DATABASE_URL` for the pooler connection used by the app
+- `DIRECT_URL` for migrations and direct DB tooling
+
+Then run the seed script to populate the tables:
 
 ```bash
 bun run seed.ts
 ```
 
-This creates the SQLite database and populates it with sample gifts.
+This creates the tables if needed, clears the gift registry tables, and repopulates them with the default catalog.
 
 ### 3. Start Development Server
 
@@ -201,7 +208,7 @@ vite.config.ts     # Vite configuration
 
 ## Troubleshooting
 
-**Database not found**: Run `bun run seed.ts`  
+**Database connection failed**: Check `DATABASE_URL` and `DIRECT_URL`  
 **Images not loading**: Ensure files are in `/public/images/`  
 **API not responding**: Check that Bun server is running on port 3000  
 **Build failing**: Run `bun install` to install all dependencies  

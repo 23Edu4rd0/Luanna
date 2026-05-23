@@ -1,8 +1,17 @@
 import 'dotenv/config';
 import { Hono } from 'hono';
 import { serveStatic } from 'hono/bun';
-import { db } from './src/shared/db';
-import { Gift, Comment } from './src/shared/types';
+import {
+  clearGiftData,
+  createComment,
+  ensureSchema,
+  getGiftById,
+  insertGiftCatalog,
+  listComments,
+  listGifts,
+  reserveGift as reserveGiftById,
+  unreserveGift,
+} from './src/shared/db';
 import { buildDefaultGifts } from './src/gifts/gift-catalog';
 
 const app = new Hono();
@@ -13,31 +22,27 @@ const WEDDING_DATE = process.env.WEDDING_DATE || '2026-10-25';
 const PORT = process.env.PORT || 3000;
 
 async function syncGiftCatalog() {
-  const existingGifts = db.query('SELECT name FROM gifts ORDER BY id ASC').all() as Array<{ name: string }>;
+  const existingGifts = await listGifts();
   const defaultGifts = buildDefaultGifts();
 
-  const isOutdated =
-    existingGifts.length !== defaultGifts.length ||
-    existingGifts.some((gift, index) => gift.name !== defaultGifts[index]?.name);
-
-  if (!isOutdated) {
-    return;
-  }
-
-  db.exec('DELETE FROM gift_reservations');
-  db.exec('DELETE FROM gifts');
-
-  const insertGift = db.query(
-    'INSERT INTO gifts (category, name, description, price, imageUrl, reserved) VALUES (?, ?, ?, ?, ?, 0)'
+  // Build a lookup key (category + name) for existing gifts to detect new ones
+  const existingKeys = new Set(
+    existingGifts.map((g) => `${g.category}::${g.name}`)
   );
 
-  for (const gift of defaultGifts) {
-    insertGift.run(gift.category, gift.name, gift.description, gift.price, gift.imageUrl);
-  }
+  const newGifts = defaultGifts.filter(
+    (g) => !existingKeys.has(`${g.category}::${g.name}`)
+  );
 
-  console.log(`🌿 Gift catalog synced with ${defaultGifts.length} options.`);
+  if (newGifts.length > 0) {
+    await insertGiftCatalog(newGifts);
+    console.log(`🌿 Gift catalog synced: ${newGifts.length} new items added.`);
+  } else {
+    console.log(`✅ Gift catalog is up to date (${existingGifts.length} items).`);
+  }
 }
 
+await ensureSchema();
 await syncGiftCatalog();
 
 // ============================================
@@ -83,32 +88,33 @@ app.get('/api/config', (ctx) => {
 
 // GET all gifts
 app.get('/api/gifts', (ctx) => {
-  try {
-    const selectAllGifts = db.query('SELECT * FROM gifts ORDER BY id ASC');
-    const gifts = selectAllGifts.all() as Gift[];
-    return ctx.json(gifts);
-  } catch (error) {
-    console.error('Error fetching gifts:', error);
-    return ctx.json({ error: 'Failed to fetch gifts' }, 500);
-  }
+  return (async () => {
+    try {
+      return ctx.json(await listGifts());
+    } catch (error) {
+      console.error('Error fetching gifts:', error);
+      return ctx.json({ error: 'Failed to fetch gifts' }, 500);
+    }
+  })();
 });
 
 // GET single gift
 app.get('/api/gifts/:id', (ctx) => {
-  try {
-    const giftId = parseInt(ctx.req.param('id'));
-    const selectGiftById = db.query('SELECT * FROM gifts WHERE id = ?');
-    const gift = selectGiftById.get(giftId) as Gift | undefined;
+  return (async () => {
+    try {
+      const giftId = parseInt(ctx.req.param('id'));
+	  const gift = await getGiftById(giftId);
 
-    if (!gift) {
-      return ctx.json({ error: 'Gift not found' }, 404);
+	  if (!gift) {
+		return ctx.json({ error: 'Gift not found' }, 404);
+	  }
+
+	  return ctx.json(gift);
+    } catch (error) {
+      console.error('Error fetching gift:', error);
+      return ctx.json({ error: 'Failed to fetch gift' }, 500);
     }
-
-    return ctx.json(gift);
-  } catch (error) {
-    console.error('Error fetching gift:', error);
-    return ctx.json({ error: 'Failed to fetch gift' }, 500);
-  }
+  })();
 });
 
 // POST: Reserve a gift
@@ -121,36 +127,42 @@ app.post('/api/gifts/:id/reserve', async (ctx) => {
       return ctx.json({ error: 'Guest name is required' }, 400);
     }
 
-    // Check if gift exists and is available
-    const selectGiftForReservation = db.query('SELECT * FROM gifts WHERE id = ?');
-    const gift = selectGiftForReservation.get(giftId) as Gift | undefined;
+	const existingGift = await getGiftById(giftId);
 
-    if (!gift) {
+	if (!existingGift) {
       return ctx.json({ error: 'Gift not found' }, 404);
     }
 
-    if (gift.reserved) {
+    if (existingGift.reserved) {
       return ctx.json({ error: 'Gift is already reserved' }, 409);
     }
 
-    // Reserve the gift
-    const updateGiftReservation = db.query(
-      'UPDATE gifts SET reserved = 1, reservedBy = ? WHERE id = ?'
-    );
-    updateGiftReservation.run(guestName, giftId);
+	const updatedGift = await reserveGiftById(giftId, guestName, guestEmail);
 
-    // Record reservation
-    const insertGiftReservationRecord = db.query(
-      'INSERT INTO gift_reservations (giftId, guestName, guestEmail) VALUES (?, ?, ?)'
-    );
-    insertGiftReservationRecord.run(giftId, guestName, guestEmail || null);
+	if (!updatedGift) {
+      return ctx.json({ error: 'Gift is already reserved' }, 409);
+    }
 
-    // Return updated gift
-    const updatedGift = selectGiftForReservation.get(giftId) as Gift;
-    return ctx.json(updatedGift);
+	return ctx.json(updatedGift);
   } catch (error) {
     console.error('Error reserving gift:', error);
     return ctx.json({ error: 'Failed to reserve gift' }, 500);
+  }
+});
+
+app.post('/api/gifts/:id/unreserve', async (ctx) => {
+  try {
+    const giftId = parseInt(ctx.req.param('id'));
+    const gift = await unreserveGift(giftId);
+
+    if (!gift) {
+      return ctx.json({ error: 'Gift is not reserved' }, 409);
+    }
+
+    return ctx.json(gift);
+  } catch (error) {
+    console.error('Error canceling gift reservation:', error);
+    return ctx.json({ error: 'Failed to cancel reservation' }, 500);
   }
 });
 
@@ -160,16 +172,14 @@ app.post('/api/gifts/:id/reserve', async (ctx) => {
 
 // GET all comments
 app.get('/api/comments', (ctx) => {
-  try {
-    const selectAllComments = db.query(
-      'SELECT * FROM comments ORDER BY createdAt DESC LIMIT 100'
-    );
-    const comments = selectAllComments.all() as Comment[];
-    return ctx.json(comments);
-  } catch (error) {
-    console.error('Error fetching comments:', error);
-    return ctx.json({ error: 'Failed to fetch comments' }, 500);
-  }
+  return (async () => {
+    try {
+	  return ctx.json(await listComments());
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      return ctx.json({ error: 'Failed to fetch comments' }, 500);
+    }
+  })();
 });
 
 // POST: Create a new comment
@@ -185,16 +195,7 @@ app.post('/api/comments', async (ctx) => {
       return ctx.json({ error: 'Message must be 1-500 characters' }, 400);
     }
 
-    const insertNewComment = db.query(
-      'INSERT INTO comments (guestName, guestEmail, message) VALUES (?, ?, ?)'
-    );
-    const insertResult = insertNewComment.run(guestName, guestEmail || null, message);
-
-    // Fetch and return the new comment
-    const selectCommentById = db.query('SELECT * FROM comments WHERE id = ?');
-    const comment = selectCommentById.get(insertResult.lastInsertRowid) as Comment;
-
-    return ctx.json(comment, 201);
+	return ctx.json(await createComment(guestName, message, guestEmail), 201);
   } catch (error) {
     console.error('Error creating comment:', error);
     return ctx.json({ error: 'Failed to create comment' }, 500);
