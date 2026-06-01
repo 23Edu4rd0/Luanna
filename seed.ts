@@ -1,7 +1,7 @@
 // Seed script to populate initial data
 // Run with: bun run seed.ts
 
-import { clearComments, clearGiftData, ensureSchema, insertGiftCatalog } from './src/shared/db';
+import { ensureSchema, upsertGiftCatalog } from './src/shared/db';
 import { buildDefaultGifts } from './src/gifts/gift-catalog';
 
 console.log('🌱 Seeding database...');
@@ -9,9 +9,10 @@ console.log('🌱 Seeding database...');
 const gifts = buildDefaultGifts();
 
 await ensureSchema();
-await clearGiftData();
 
-await clearComments();
-await insertGiftCatalog(gifts);
+const { preservedReservations } = await upsertGiftCatalog(gifts);
 
-console.log(`\n✅ Database seeded! ${gifts.length} gifts added.`);
+console.log(
+	`\n✅ Database updated! ${gifts.length} gifts processed.` +
+		` ${preservedReservations} reservations preserved.`
+);

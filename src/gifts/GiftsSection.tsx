@@ -44,7 +44,7 @@ export function GiftsSection() {
       <div className="max-w-6xl mx-auto">
         <SectionTitle
           title="Lista de Opções"
-          subtitle="Escolha o item que mais combina com vocês"
+          subtitle="Para escolher um presente: clique no ícone de carrinho no item desejado, digite seu nome completo e finalize a reserva."
         />
 
         {error && (

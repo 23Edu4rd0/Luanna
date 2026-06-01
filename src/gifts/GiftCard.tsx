@@ -70,7 +70,10 @@ export function GiftCard({ gift, onReserve, isReserving = false }: GiftCardProps
           )}
           <button
             type="button"
-            onClick={() => setShowReserveModal(true)}
+            onClick={() => {
+              setShowReserveModal(true);
+              setReserveError('');
+            }}
             disabled={isReserved || isReserving}
             aria-label={isReserved ? 'Presente reservado' : 'Confirmar presente'}
             className={`absolute bottom-3 right-3 inline-flex h-11 w-11 items-center justify-center rounded-full border shadow-card transition ${

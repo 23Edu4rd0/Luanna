@@ -109,6 +109,41 @@ export async function insertGiftCatalog(gifts: Omit<Gift, 'id'>[]) {
 	});
 }
 
+
+export async function upsertGiftCatalog(gifts: Omit<Gift, 'id'>[]) {
+	let preservedReservations = 0;
+
+	await db.begin(async (transaction) => {
+		for (const gift of gifts) {
+			const rows = await transaction<GiftRow[]>`
+				select id, reserved, reserved_by
+				from gifts
+				where category = ${gift.category} and name = ${gift.name}
+				limit 1
+			`;
+
+			if (rows[0]) {
+				if (rows[0].reserved) {
+					preservedReservations += 1;
+				}
+				await transaction`
+					update gifts
+					set image_url = ${gift.imageUrl || null}
+					where id = ${rows[0].id}
+				`;
+				continue;
+			}
+
+			await transaction`
+				insert into gifts (category, name, image_url, reserved, reserved_by)
+				values (${gift.category}, ${gift.name}, ${gift.imageUrl || null}, ${gift.reserved}, ${gift.reservedBy || null})
+			`;
+		}
+	});
+
+	return { preservedReservations };
+}
+
 export async function reserveGift(
 	giftId: number,
 	guestName: string
