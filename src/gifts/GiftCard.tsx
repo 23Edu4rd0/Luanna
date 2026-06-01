@@ -107,10 +107,11 @@ export function GiftCard({ gift, onReserve, isReserving = false }: GiftCardProps
           className="space-y-4"
         >
           <div>
-            <label className="block text-sm font-medium text-brand-text mb-2">
+            <label htmlFor="guestName" className="block text-sm font-medium text-brand-text mb-2">
               Seu Nome *
             </label>
             <input
+              id="guestName"
               type="text"
               value={guestName}
               onChange={(e) => {
@@ -120,14 +121,16 @@ export function GiftCard({ gift, onReserve, isReserving = false }: GiftCardProps
               placeholder="Digite seu nome"
               className="w-full px-4 py-2 border border-brand-beige/50 rounded-lg focus:outline-none focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 transition-colors"
               disabled={reserveLoading}
+              aria-required="true"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-brand-text mb-2">
+            <label htmlFor="guestEmail" className="block text-sm font-medium text-brand-text mb-2">
               Email (opcional)
             </label>
             <input
+              id="guestEmail"
               type="email"
               value={guestEmail}
               onChange={(e) => setGuestEmail(e.target.value)}

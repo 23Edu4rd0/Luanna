@@ -78,6 +78,20 @@ const isAdminPath = () =>
 
 // visit tracking removed; admin UI focuses only on reservations
 
+function SectionDivider() {
+  return (
+    <div className="flex items-center justify-center py-8 opacity-80" aria-hidden="true">
+      <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-brand-mocha/30 md:w-32"></div>
+      <div className="mx-4 flex items-center gap-1.5 text-brand-mocha/40">
+        <div className="h-1.5 w-1.5 rotate-45 transform bg-brand-mocha/30"></div>
+        <div className="h-2 w-2 rotate-45 transform border border-brand-mocha/40"></div>
+        <div className="h-1.5 w-1.5 rotate-45 transform bg-brand-mocha/30"></div>
+      </div>
+      <div className="h-[1px] w-16 bg-gradient-to-l from-transparent to-brand-mocha/30 md:w-32"></div>
+    </div>
+  );
+}
+
 export function App() {
   const { config } = useWeddingConfig();
   const [gifts, setGifts] = useState<Gift[]>([]);
@@ -411,18 +425,20 @@ export function App() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl space-y-12 px-4 pb-20">
+      <main className="mx-auto max-w-6xl space-y-4 px-4 pb-20">
+        <SectionDivider />
+
         <section className="relative py-1 text-center">
-          <div className="mx-auto h-px w-28 bg-brand-sand/70" />
-          <h2 className="mt-6 text-2xl font-semibold md:text-3xl">Nossa história</h2>
+          <h2 className="mt-2 text-2xl font-semibold md:text-3xl">Nossa história</h2>
           <p className="mx-auto mt-6 max-w-4xl text-base leading-relaxed text-brand-mocha md:text-xl">
             {DEFAULT_STORY}
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-sm italic text-brand-mocha/80 md:text-base">
             Amor que acolhe, inspira e floresce em cada detalhe do nosso novo capítulo.
           </p>
-          <div className="mx-auto mt-6 h-px w-28 bg-brand-sand/70" />
         </section>
+
+        <SectionDivider />
 
         <section className="space-y-5">
           <h2 className="text-center text-2xl font-semibold md:text-3xl">Linha do tempo</h2>
@@ -469,6 +485,8 @@ export function App() {
           </div>
         </section>
 
+        <SectionDivider />
+
         <section className="mx-auto max-w-4xl space-y-5 py-1">
           <div className="text-center">
             <p className="text-[10px] uppercase tracking-[0.42em] text-brand-mocha/65">
@@ -506,13 +524,15 @@ export function App() {
           </p>
         </section>
 
+        <SectionDivider />
+
         <section className="mx-auto max-w-4xl space-y-4 py-1 text-center">
           <p className="text-[10px] uppercase tracking-[0.42em] text-brand-mocha/65">
             Sugestões de presentes
           </p>
           <h2 className="text-2xl font-semibold md:text-3xl">Escolha com carinho o que quiser trazer</h2>
           <p className="mx-auto max-w-2xl text-sm leading-relaxed text-brand-mocha md:text-base">
-            Aqui estão algumas ideias para participar desse novo lar com a gente.
+            Para escolher um presente: clique no ícone de carrinho no item desejado, digite seu nome completo e finalize a reserva.
           </p>
         </section>
 
