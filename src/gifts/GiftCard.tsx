@@ -43,53 +43,58 @@ export function GiftCard({ gift, onReserve, isReserving = false }: GiftCardProps
   return (
     <>
       <Card
-        className={`group flex flex-col h-full overflow-hidden border transition-all duration-300 ${
+        className={`group relative h-full overflow-hidden border p-0 transition-all duration-300 ${
           isReserved
             ? 'border-brand-beige/70 bg-brand-beige/30 opacity-80'
             : 'border-brand-beige/50 bg-white/95 hover:-translate-y-1 hover:shadow-xl'
         }`}
       >
-        <div className="relative overflow-hidden rounded-2xl bg-brand-beige/40">
-          <img
-            src={gift.imageUrl}
-            alt={gift.name}
-            className={`h-48 w-full object-cover transition-transform duration-500 ${
-              isReserved ? 'grayscale' : 'group-hover:scale-[1.04]'
-            }`}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect fill='%23f3efe6' width='400' height='240'/%3E%3C/svg%3E`;
-            }}
-          />
-          {isReserved && (
-            <>
-              <div className="absolute inset-0 bg-black/25" />
-              <div className="absolute left-4 top-4 rounded-full bg-white/80 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.3em] text-brand-mocha/70 shadow-card">
-                Reservado
-              </div>
-            </>
-          )}
-          <button
-            type="button"
-            onClick={() => {
-              setShowReserveModal(true);
-              setReserveError('');
-            }}
-            disabled={isReserved || isReserving}
-            aria-label={isReserved ? 'Presente reservado' : 'Confirmar presente'}
-            className={`absolute bottom-3 right-3 inline-flex h-11 w-11 items-center justify-center rounded-full border shadow-card transition ${
-              isReserved
-                ? 'border-white/70 bg-white/70 text-brand-mocha/70'
-                : 'border-white/80 bg-white/95 text-brand-gold hover:bg-white'
-            } disabled:cursor-not-allowed disabled:opacity-60`}
-          >
-            <ShoppingCart size={18} />
-          </button>
-        </div>
+        <div className="pointer-events-none absolute inset-0 rounded-lg border border-brand-wood/25 bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22180%22 viewBox=%220 0 180 180%22%3E%3Cg fill=%22none%22 stroke=%22%238f7055%22 stroke-opacity=%220.12%22 stroke-width=%221%22%3E%3Cpath d=%22M16 36c18 10 30 22 40 40%22/%3E%3Cpath d=%22M60 20c10 16 22 28 38 38%22/%3E%3Cpath d=%22M120 24c6 14 16 26 30 36%22/%3E%3Cpath d=%22M24 120c20-6 34-18 48-36%22/%3E%3Cpath d=%22M92 110c10-6 20-14 28-24%22/%3E%3C/g%3E%3C/svg%3E')] bg-[length:180px_180px] opacity-60" />
+        <div className="pointer-events-none absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-brand-olive/50 via-brand-olive/10 to-transparent" />
 
-        <div className="flex-1 p-4">
-          <h3 className="text-lg md:text-xl font-serif font-medium leading-tight text-brand-dark">
-            {gift.name}
-          </h3>
+        <div className="relative flex h-full flex-col">
+          <div className="relative overflow-hidden rounded-2xl bg-brand-beige/40">
+            <img
+              src={gift.imageUrl}
+              alt={gift.name}
+              className={`h-48 w-full object-cover transition-transform duration-500 ${
+                isReserved ? 'grayscale' : 'group-hover:scale-[1.04]'
+              }`}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect fill='%23f3efe6' width='400' height='240'/%3E%3C/svg%3E`;
+              }}
+            />
+            {isReserved && (
+              <>
+                <div className="absolute inset-0 bg-black/25" />
+                <div className="absolute left-4 top-4 rounded-full bg-white/80 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.3em] text-brand-mocha/70 shadow-card">
+                  Reservado
+                </div>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                setShowReserveModal(true);
+                setReserveError('');
+              }}
+              disabled={isReserved || isReserving}
+              aria-label={isReserved ? 'Presente reservado' : 'Confirmar presente'}
+              className={`absolute bottom-3 right-3 inline-flex h-11 w-11 items-center justify-center rounded-full border shadow-card transition ${
+                isReserved
+                  ? 'border-white/70 bg-white/70 text-brand-mocha/70'
+                  : 'border-brand-olive/20 bg-white/95 text-brand-olive hover:bg-white'
+              } disabled:cursor-not-allowed disabled:opacity-60`}
+            >
+              <ShoppingCart size={18} />
+            </button>
+          </div>
+
+          <div className="flex-1 p-4">
+            <h3 className="text-lg md:text-xl font-serif font-bold leading-tight text-brand-dark">
+              {gift.name}
+            </h3>
+          </div>
         </div>
       </Card>
 

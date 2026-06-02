@@ -80,14 +80,14 @@ const isAdminPath = () =>
 
 function SectionDivider() {
   return (
-    <div className="flex items-center justify-center py-8 opacity-80" aria-hidden="true">
-      <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-brand-mocha/30 md:w-32"></div>
-      <div className="mx-4 flex items-center gap-1.5 text-brand-mocha/40">
-        <div className="h-1.5 w-1.5 rotate-45 transform bg-brand-mocha/30"></div>
-        <div className="h-2 w-2 rotate-45 transform border border-brand-mocha/40"></div>
-        <div className="h-1.5 w-1.5 rotate-45 transform bg-brand-mocha/30"></div>
+    <div className="flex items-center justify-center py-8 opacity-90" aria-hidden="true">
+      <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-brand-wood/40 to-transparent md:w-36"></div>
+      <div className="mx-4 flex items-center gap-1.5 text-brand-olive/50">
+        <div className="h-1.5 w-1.5 rotate-45 transform bg-brand-wood/40"></div>
+        <div className="h-2 w-2 rotate-45 transform border border-brand-olive/40"></div>
+        <div className="h-1.5 w-1.5 rotate-45 transform bg-brand-wood/40"></div>
       </div>
-      <div className="h-[1px] w-16 bg-gradient-to-l from-transparent to-brand-mocha/30 md:w-32"></div>
+      <div className="h-[1px] w-20 bg-gradient-to-l from-transparent via-brand-wood/40 to-transparent md:w-36"></div>
     </div>
   );
 }
@@ -245,6 +245,26 @@ export function App() {
       });
   };
 
+  useEffect(() => {
+    if (!selectedGift) return;
+
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedGift(null);
+        setReserveError('');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedGift]);
+
   const weddingDateTime = config.weddingDate.includes('T')
     ? config.weddingDate
     : `${config.weddingDate}T18:00:00`;
@@ -391,17 +411,17 @@ export function App() {
 
       <header className="relative px-4 pb-2 pt-14 md:pb-5 md:pt-20">
         <div className="mx-auto max-w-4xl text-center">
-          <p className="text-xs uppercase tracking-[0.35em] text-brand-mocha/80">
+          <p className="text-xs uppercase tracking-[0.35em] text-brand-olive/70">
             Casamento & Chá de Casa Nova
           </p>
           <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-6xl">
             {config.coupleNames}
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-brand-mocha md:text-base">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-brand-mocha/90 md:text-base">
             Um espaço delicado para celebrar nosso amor, nossa história e o novo lar que estamos
             construindo juntos.
           </p>
-          <p className="mt-4 text-sm text-brand-mocha md:text-base">
+          <p className="mt-4 text-sm text-brand-olive/80 md:text-base">
             {weddingDateLabel}
           </p>
 
@@ -428,19 +448,19 @@ export function App() {
       <main className="mx-auto max-w-6xl space-y-4 px-4 pb-20">
         <SectionDivider />
 
-        <section className="relative py-1 text-center">
-          <h2 className="mt-2 text-2xl font-semibold md:text-3xl">Nossa história</h2>
-          <p className="mx-auto mt-6 max-w-4xl text-base leading-relaxed text-brand-mocha md:text-xl">
+        <section className="relative overflow-hidden py-1 text-center">
+          <h2 className="mt-2 text-2xl font-semibold text-brand-olive md:text-3xl">Nossa história</h2>
+          <p className="mx-auto mt-6 max-w-4xl text-base leading-relaxed text-brand-mocha/90 md:text-xl">
             {DEFAULT_STORY}
           </p>
-          <p className="mx-auto mt-4 max-w-2xl text-sm italic text-brand-mocha/80 md:text-base">
+          <p className="mx-auto mt-4 max-w-2xl text-sm italic text-brand-olive/70 md:text-base">
             Amor que acolhe, inspira e floresce em cada detalhe do nosso novo capítulo.
           </p>
         </section>
 
         <SectionDivider />
 
-        <section className="space-y-5">
+        <section className="relative space-y-5 overflow-hidden">
           <h2 className="text-center text-2xl font-semibold md:text-3xl">Linha do tempo</h2>
           <div className="relative mx-auto max-w-5xl py-2">
             <div className="absolute left-8 top-0 h-full w-px bg-gradient-to-b from-brand-sand/0 via-brand-sand to-brand-sand/0 md:left-1/2 md:-translate-x-1/2" />
@@ -487,51 +507,51 @@ export function App() {
 
         <SectionDivider />
 
-        <section className="mx-auto max-w-4xl space-y-5 py-1">
+        <section className="relative mx-auto max-w-4xl space-y-6 py-1 overflow-hidden">
           <div className="text-center">
-            <p className="text-[10px] uppercase tracking-[0.42em] text-brand-mocha/65">
+            <p className="text-[10px] uppercase tracking-[0.42em] text-brand-olive/60">
               Convite do local
             </p>
-            <h2 className="mt-3 text-2xl font-semibold md:text-3xl">
+            <h2 className="mt-3 text-2xl font-semibold text-brand-olive md:text-3xl">
               Informações da festinha de casa nova
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-brand-mocha md:text-base">
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-brand-mocha/90 md:text-base">
               Vai ser um encontro íntimo e cheio de carinho. Aqui estão os dados para você chegar
               tranquilo(a).
             </p>
           </div>
 
-          <div className="mx-auto max-w-3xl rounded-[28px] border border-white/60 bg-white/55 px-5 py-6 shadow-card backdrop-blur-sm md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0 md:shadow-none md:backdrop-blur-0">
-            <dl className="space-y-1">
+          <div className="mx-auto w-full max-w-3xl text-center">
+            <div className="space-y-6">
               {CEREMONY_DETAILS.map((detail) => (
-                <div key={detail.label} className="group py-4">
-                  <div className="grid grid-cols-1 gap-2 md:grid-cols-[170px_1fr] md:items-center">
-                    <dt className="text-[11px] uppercase tracking-[0.24em] text-brand-mocha/85">
-                      {detail.label}
-                    </dt>
-                    <dd className="text-lg leading-snug text-brand-charcoal md:text-[1.2rem]">
-                      {detail.value}
-                    </dd>
-                  </div>
-                  <div className="mt-3 h-px w-full bg-gradient-to-r from-brand-sand/20 via-brand-sand/70 to-brand-sand/20 transition group-hover:via-brand-wood/70" />
+                <div key={detail.label} className="space-y-2">
+                  <dt className="text-[11px] uppercase tracking-[0.34em] text-brand-olive/70">
+                    {detail.label}
+                  </dt>
+                  <dd className="text-lg font-medium text-brand-charcoal md:text-[1.2rem]">
+                    {detail.value}
+                  </dd>
+                  <div className="mx-auto h-px w-28 bg-gradient-to-r from-transparent via-brand-wood/60 to-transparent" />
                 </div>
               ))}
-            </dl>
+            </div>
           </div>
 
-          <p className="pt-2 text-center text-sm italic text-brand-mocha">
+          <p className="pt-2 text-center text-sm italic text-brand-olive/70">
             Dica especial: chegue com antecedência para aproveitar cada instante com a gente.
           </p>
         </section>
 
         <SectionDivider />
 
-        <section className="mx-auto max-w-4xl space-y-4 py-1 text-center">
+        <section className="relative mx-auto max-w-4xl space-y-4 py-1 text-center overflow-hidden">
           <p className="text-[10px] uppercase tracking-[0.42em] text-brand-mocha/65">
             Sugestões de presentes
           </p>
-          <h2 className="text-2xl font-semibold md:text-3xl">Escolha com carinho o que quiser trazer</h2>
-          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-brand-mocha md:text-base">
+          <h2 className="text-2xl font-semibold text-brand-olive md:text-3xl">
+            Escolha com carinho o que quiser trazer
+          </h2>
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-brand-mocha/90 md:text-base">
             Para escolher um presente: clique no ícone de carrinho no item desejado, digite seu nome completo e finalize a reserva.
           </p>
         </section>
@@ -551,21 +571,32 @@ export function App() {
         {!loading &&
           !loadError &&
           giftsByCategory.map(({ category, items }) => (
-            <section key={category} className="space-y-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex-1">
-                  <h2 className="text-xl font-semibold md:text-2xl">
-                    {CATEGORY_META[category].label}
-                  </h2>
-                  {CATEGORY_META[category].subtitle && (
-                    <p className="mt-1 text-xs text-brand-mocha/70 md:text-sm">
-                      {CATEGORY_META[category].subtitle}
-                    </p>
-                  )}
+            <section key={category} className="space-y-6 pt-6">
+              <div className="flex flex-col items-center text-center space-y-2">
+                {/* Visual ornament */}
+                <div className="flex items-center gap-1.5 text-brand-sand/70 animate-fade-in" aria-hidden="true">
+                  <div className="h-1 w-1 rotate-45 transform bg-brand-sand"></div>
+                  <div className="h-1.5 w-1.5 rotate-45 transform border border-brand-sand"></div>
+                  <div className="h-1 w-1 rotate-45 transform bg-brand-sand"></div>
                 </div>
-                <span className="rounded-full bg-white/75 px-3 py-1 text-xs tracking-[0.2em] text-brand-mocha shadow-card">
-                  {items.length} ITENS
-                </span>
+
+                <h2 className="font-serif text-2xl font-semibold text-brand-olive tracking-wide md:text-3xl">
+                  {CATEGORY_META[category].label}
+                </h2>
+
+                <div className="flex items-center gap-2">
+                  <span className="h-[1px] w-6 bg-brand-sand/40"></span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-brand-mocha/80">
+                    {items.length} {items.length === 1 ? 'item' : 'itens'}
+                  </span>
+                  <span className="h-[1px] w-6 bg-brand-sand/40"></span>
+                </div>
+
+                {CATEGORY_META[category].subtitle && (
+                  <p className="mt-1 max-w-md text-xs italic text-brand-mocha/70 md:text-sm">
+                    {CATEGORY_META[category].subtitle}
+                  </p>
+                )}
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -573,10 +604,10 @@ export function App() {
                   <article
                     key={item.id}
                     onClick={() => !item.reserved && setSelectedGift(item)}
-                    className={`overflow-hidden rounded-[32px] border p-4 shadow-card backdrop-blur-sm transition ${
+                    className={`overflow-hidden rounded-[32px] border p-4 shadow-card backdrop-blur-md transition-all duration-300 ${
                       item.reserved
-                        ? 'cursor-default border-brand-beige/70 bg-slate-100/70'
-                        : 'cursor-pointer border-white/80 bg-white/72 hover:-translate-y-1 hover:border-brand-sand/80 hover:shadow-[0_18px_32px_rgba(34,29,24,0.16)]'
+                        ? 'cursor-default border-brand-sand/30 bg-slate-100/50'
+                        : 'cursor-pointer border-brand-sand/35 bg-white/45 hover:-translate-y-1.5 hover:border-brand-olive/35 hover:shadow-[0_16px_36px_rgba(47,75,63,0.08)]'
                     }`}
                   >
                     <div className="relative">
@@ -595,13 +626,13 @@ export function App() {
                       )}
                     </div>
 
-                    <h3 className="mt-4 text-lg font-medium">{item.name}</h3>
+                    <h3 className="mt-4 font-serif text-[17px] md:text-lg font-semibold text-brand-charcoal leading-tight tracking-wide">{item.name}</h3>
                   </article>
                 ))}
               </div>
 
               {isMobileViewport && items.length > 10 && !expandedCategories[category] && (
-                <div className="flex justify-center pt-2 md:hidden">
+                <div className="flex justify-center pt-4 md:hidden">
                   <button
                     type="button"
                     onClick={() =>
@@ -610,7 +641,7 @@ export function App() {
                         [category]: true,
                       }))
                     }
-                    className="inline-flex items-center gap-2 rounded-full border border-brand-sand/55 px-4 py-2 text-xs uppercase tracking-[0.22em] text-brand-mocha transition hover:border-brand-wood/70 hover:text-brand-charcoal"
+                    className="inline-flex w-full max-w-xs justify-center items-center gap-2 rounded-full border border-brand-olive/35 bg-white px-6 py-3.5 text-xs font-bold uppercase tracking-[0.24em] text-brand-olive shadow-sm transition-all active:scale-95 hover:border-brand-olive/60 hover:bg-brand-cream/50"
                   >
                     Ver mais
                   </button>
@@ -618,7 +649,7 @@ export function App() {
               )}
 
               {isMobileViewport && items.length > 10 && expandedCategories[category] && (
-                <div className="flex justify-center pt-2 md:hidden">
+                <div className="flex justify-center pt-4 md:hidden">
                   <button
                     type="button"
                     onClick={() =>
@@ -627,7 +658,7 @@ export function App() {
                         [category]: false,
                       }))
                     }
-                    className="inline-flex items-center gap-2 rounded-full border border-brand-sand/55 px-4 py-2 text-xs uppercase tracking-[0.22em] text-brand-mocha transition hover:border-brand-wood/70 hover:text-brand-charcoal"
+                    className="inline-flex w-full max-w-xs justify-center items-center gap-2 rounded-full border border-brand-olive/35 bg-white px-6 py-3.5 text-xs font-bold uppercase tracking-[0.24em] text-brand-olive shadow-sm transition-all active:scale-95 hover:border-brand-olive/60 hover:bg-brand-cream/50"
                   >
                     Ver menos
                   </button>
@@ -637,8 +668,13 @@ export function App() {
           ))}
       </main>
 
-      <footer className="px-4 pb-10 text-center text-sm text-brand-mocha/85">
-        <p>Com amor, {config.coupleNames}</p>
+      <footer className="mx-auto max-w-xl px-6 pb-12 text-center">
+        <div className="text-sm leading-relaxed text-brand-mocha space-y-2">
+          <p className="font-semibold text-brand-olive font-serif text-[18px]">Uma dica simples e carinhosa:</p>
+          <p className="italic">
+            Para escolher o seu presente, é bem fácil: basta clicar em cima da imagem do item que você mais gostou, digitar o seu nome completo e clicar no botão para confirmar. Viu só que facinho? Muito obrigado(a) por nos ajudar a construir o nosso lar! <span className="not-italic font-semibold text-brand-olive ml-2">— Com amor, Wendell e Luana</span>
+          </p>
+        </div>
       </footer>
 
       {selectedGift && (
@@ -671,7 +707,7 @@ export function App() {
                     setGuestName(event.target.value);
                     setReserveError('');
                   }}
-                  className="mt-2 w-full rounded-full border border-brand-sand bg-brand-cream/30 px-4 py-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-mocha"
+                  className="mt-2 w-full rounded-full border border-brand-wood/30 bg-brand-cream/40 px-4 py-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-olive"
                   placeholder="Digite seu nome completo"
                 />
               </label>
@@ -684,7 +720,7 @@ export function App() {
 
               <button
                 type="submit"
-                className="w-full rounded-full bg-brand-charcoal px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-black"
+                className="w-full rounded-full bg-brand-olive px-4 py-3 text-sm font-semibold text-white shadow-[0_12px_22px_rgba(47,75,63,0.25)] transition hover:bg-brand-olive/90"
               >
                 Confirmar que vou presentear
               </button>
