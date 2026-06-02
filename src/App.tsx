@@ -1,5 +1,6 @@
 import { FormEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { useWeddingConfig } from './shared/hooks';
+import { Calendar, Clock, MapPin } from 'lucide-react';
 import inicio2024Image from './story/assets/inicio-2024.png';
 import crescendoImage from './story/assets/crescendo.jpeg';
 import noivadoImage from './story/assets/noivado.jpeg';
@@ -132,7 +133,7 @@ export function App() {
       console.error(e);
     }
     loadGifts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -411,15 +412,15 @@ export function App() {
 
       <header className="relative px-4 pb-2 pt-14 md:pb-5 md:pt-20">
         <div className="mx-auto max-w-4xl text-center">
-          <p className="text-xs uppercase tracking-[0.35em] text-brand-olive/70">
-            Casamento & Chá de Casa Nova
-          </p>
           <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-6xl">
             {config.coupleNames}
           </h1>
+          <p className="text-xs uppercase tracking-[0.35em] text-brand-olive/70">
+            Casamento & Chá de Casa Nova
+          </p>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-brand-mocha/90 md:text-base">
-            Um espaço delicado para celebrar nosso amor, nossa história e o novo lar que estamos
-            construindo juntos.
+            Um espaço delicado para celebrar nosso amor, nossa história e o novo
+            lar que estamos construindo juntos.
           </p>
           <p className="mt-4 text-sm text-brand-olive/80 md:text-base">
             {weddingDateLabel}
@@ -431,9 +432,12 @@ export function App() {
             </p>
             <div className="mt-4 flex flex-nowrap items-end justify-center gap-x-3 overflow-x-auto pb-1 md:gap-x-8 md:overflow-visible md:pb-0">
               {countdownUnits.map((unit) => (
-                <div key={unit.label} className="flex min-w-16 flex-col items-center md:min-w-20">
+                <div
+                  key={unit.label}
+                  className="flex min-w-16 flex-col items-center md:min-w-20"
+                >
                   <span className="text-[1.6rem] font-medium leading-none tracking-tight text-brand-charcoal md:text-5xl">
-                    {String(unit.value).padStart(2, '0')}
+                    {String(unit.value).padStart(2, "0")}
                   </span>
                   <span className="mt-1 text-[9px] uppercase tracking-[0.24em] text-brand-mocha/70 md:text-[11px] md:tracking-[0.3em]">
                     {unit.label}
@@ -448,66 +452,80 @@ export function App() {
       <main className="mx-auto max-w-6xl space-y-4 px-4 pb-20">
         <SectionDivider />
 
-        <section className="relative overflow-hidden py-1 text-center">
-          <h2 className="mt-2 text-2xl font-semibold text-brand-olive md:text-3xl">Nossa história</h2>
-          <p className="mx-auto mt-6 max-w-4xl text-base leading-relaxed text-brand-mocha/90 md:text-xl">
-            {DEFAULT_STORY}
-          </p>
-          <p className="mx-auto mt-4 max-w-2xl text-sm italic text-brand-olive/70 md:text-base">
-            Amor que acolhe, inspira e floresce em cada detalhe do nosso novo capítulo.
-          </p>
-        </section>
+        {/* === Nossa história + Linha do tempo (lado a lado) === */}
+        <section className="relative overflow-hidden py-4">
 
-        <SectionDivider />
+          {/* Linha divisória central — visível apenas em desktop */}
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-brand-sand/0 via-brand-sand to-brand-sand/0 pointer-events-none" />
 
-        <section className="relative space-y-5 overflow-hidden">
-          <h2 className="text-center text-2xl font-semibold md:text-3xl">Linha do tempo</h2>
-          <div className="relative mx-auto max-w-5xl py-2">
-            <div className="absolute left-8 top-0 h-full w-px bg-gradient-to-b from-brand-sand/0 via-brand-sand to-brand-sand/0 md:left-1/2 md:-translate-x-1/2" />
+          <div className="grid grid-cols-1 lg:grid-cols-2">
 
-            <div className="space-y-8">
-              {TIMELINE_EVENTS.map((event, index) => (
-                <div
-                  key={event.id}
-                  className={`relative pl-20 md:pl-0 ${index % 2 === 0 ? 'md:pr-[54%]' : 'md:pl-[54%]'}`}
-                >
-                  <div
-                    className={`absolute left-2 top-12 inline-flex h-12 w-12 items-center justify-center rounded-full border border-brand-sand/55 bg-white/85 shadow-card md:left-1/2 md:-translate-x-1/2 ${
-                      index % 2 === 0 ? 'md:-translate-x-[52%]' : 'md:-translate-x-[48%]'
-                    }`}
-                  >
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-brand-sand/50 bg-white/95 text-[10px] font-semibold tracking-[0.08em] text-brand-mocha/75">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                  </div>
-
-                  <article className="md:border-none md:pl-0">
-                    <div className="mx-auto aspect-square w-full max-w-[290px] overflow-hidden rounded-full border border-white/90 bg-brand-cream/30 p-1.5 shadow-[0_12px_30px_rgba(34,29,24,0.12)] md:max-w-[310px]">
-                      <img
-                        src={event.imageUrl}
-                        alt={event.title}
-                        className={`h-full w-full rounded-full object-cover ${
-                          event.id === 2 ? 'object-[center_22%]' : 'object-center'
-                        }`}
-                      />
-                    </div>
-                    <p className="mt-4 text-center text-xs uppercase tracking-[0.24em] text-brand-mocha md:text-left">
-                      {event.date}
-                    </p>
-                    <h3 className="mt-1 text-center text-xl font-semibold md:text-left">{event.title}</h3>
-                    <p className="mt-2 text-center text-sm leading-relaxed text-brand-mocha md:text-left md:text-base">
-                      {event.description}
-                    </p>
-                  </article>
-                </div>
-              ))}
+            {/* Coluna esquerda: Nossa história */}
+            <div className="flex flex-col justify-center space-y-5 pr-0 lg:pr-16 text-center lg:text-left">
+              <h2 className="text-2xl font-semibold text-brand-olive md:text-3xl">
+                Nossa história
+              </h2>
+              <p className="text-base leading-relaxed text-brand-mocha/90 md:text-lg">
+                {DEFAULT_STORY}
+              </p>
+              <p className="text-sm italic text-brand-olive/70 md:text-base">
+                Amor que acolhe, inspira e floresce em cada detalhe do nosso novo
+                capítulo.
+              </p>
             </div>
+
+            {/* Coluna direita: Linha do tempo */}
+            <div className="mt-10 lg:mt-0 pl-0 lg:pl-16 space-y-10">
+              <h2 className="text-2xl font-semibold text-brand-olive md:text-3xl text-center lg:text-left">
+                Linha do tempo
+              </h2>
+              <div className="space-y-10">
+                {TIMELINE_EVENTS.map((event, index) => (
+                  <div key={event.id} className="flex gap-5 items-start">
+                    {/* Número do evento */}
+                    <div className="flex-shrink-0 inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-sand/55 bg-white/85 shadow-card mt-1">
+                      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-brand-sand/50 bg-white/95 text-[10px] font-semibold tracking-[0.08em] text-brand-mocha/75">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-4 items-start flex-1">
+                      {/* Foto circular */}
+                      <div className="flex-shrink-0 aspect-square w-[100px] overflow-hidden rounded-full border border-white/90 bg-brand-cream/30 p-1 shadow-[0_8px_20px_rgba(34,29,24,0.12)]">
+                        <img
+                          src={event.imageUrl}
+                          alt={event.title}
+                          className={`h-full w-full rounded-full object-cover ${
+                            event.id === 2 ? "object-[center_22%]" : "object-center"
+                          }`}
+                        />
+                      </div>
+                      {/* Texto */}
+                      <div className="flex-1">
+                        <p className="text-xs uppercase tracking-[0.24em] text-brand-mocha">
+                          {event.date}
+                        </p>
+                        <h3 className="mt-1 text-lg font-semibold text-brand-charcoal">
+                          {event.title}
+                        </h3>
+                        <p className="mt-1 text-sm leading-relaxed text-brand-mocha">
+                          {event.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         </section>
 
+
+
         <SectionDivider />
 
-        <section className="relative mx-auto max-w-4xl space-y-6 py-1 overflow-hidden">
+        <section className="relative mx-auto max-w-5xl space-y-8 py-1 overflow-hidden">
           <div className="text-center">
             <p className="text-[10px] uppercase tracking-[0.42em] text-brand-olive/60">
               Convite do local
@@ -516,29 +534,44 @@ export function App() {
               Informações da festinha de casa nova
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-brand-mocha/90 md:text-base">
-              Vai ser um encontro íntimo e cheio de carinho. Aqui estão os dados para você chegar
-              tranquilo(a).
+              Vai ser um encontro íntimo e cheio de carinho. Aqui estão os dados
+              para você chegar tranquilo(a).
             </p>
           </div>
 
-          <div className="mx-auto w-full max-w-3xl text-center">
-            <div className="space-y-6">
-              {CEREMONY_DETAILS.map((detail) => (
-                <div key={detail.label} className="space-y-2">
-                  <dt className="text-[11px] uppercase tracking-[0.34em] text-brand-olive/70">
-                    {detail.label}
-                  </dt>
-                  <dd className="text-lg font-medium text-brand-charcoal md:text-[1.2rem]">
-                    {detail.value}
-                  </dd>
-                  <div className="mx-auto h-px w-28 bg-gradient-to-r from-transparent via-brand-wood/60 to-transparent" />
-                </div>
-              ))}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-0 py-4">
+            {/* Data */}
+            <div className="flex flex-col items-center gap-2 px-10 py-4">
+              <Calendar className="h-5 w-5 text-brand-olive/65" />
+              <dt className="text-[10px] uppercase tracking-[0.28em] text-brand-olive/70 font-semibold">Data</dt>
+              <dd className="text-2xl font-semibold text-brand-charcoal">20/06</dd>
+            </div>
+
+            <div className="hidden sm:block w-px h-16 bg-brand-sand/50" />
+            <div className="block sm:hidden h-px w-20 bg-brand-sand/50" />
+
+            {/* Horário */}
+            <div className="flex flex-col items-center gap-2 px-10 py-4">
+              <Clock className="h-5 w-5 text-brand-olive/65" />
+              <dt className="text-[10px] uppercase tracking-[0.28em] text-brand-olive/70 font-semibold">Horário</dt>
+              <dd className="text-2xl font-semibold text-brand-charcoal">16h</dd>
+            </div>
+
+            <div className="hidden sm:block w-px h-16 bg-brand-sand/50" />
+            <div className="block sm:hidden h-px w-20 bg-brand-sand/50" />
+
+            {/* Endereço */}
+            <div className="flex flex-col items-center gap-2 px-10 py-4">
+              <MapPin className="h-5 w-5 text-brand-olive/65" />
+              <dt className="text-[10px] uppercase tracking-[0.28em] text-brand-olive/70 font-semibold">Endereço</dt>
+              <dd className="text-base font-semibold text-brand-charcoal text-center">Rua do Capitão, 490, Del Rey</dd>
             </div>
           </div>
 
-          <p className="pt-2 text-center text-sm italic text-brand-olive/70">
-            Dica especial: chegue com antecedência para aproveitar cada instante com a gente.
+
+          <p className="text-center text-sm italic text-brand-olive/70">
+            Dica especial: chegue com antecedência para aproveitar cada instante
+            com a gente.
           </p>
         </section>
 
@@ -552,7 +585,8 @@ export function App() {
             Escolha com carinho o que quiser trazer
           </h2>
           <p className="mx-auto max-w-2xl text-sm leading-relaxed text-brand-mocha/90 md:text-base">
-            Para escolher um presente: clique no ícone de carrinho no item desejado, digite seu nome completo e finalize a reserva.
+            Para escolher um presente: clique no ícone de carrinho no item
+            desejado, digite seu nome completo e finalize a reserva.
           </p>
         </section>
 
@@ -574,7 +608,10 @@ export function App() {
             <section key={category} className="space-y-6 pt-6">
               <div className="flex flex-col items-center text-center space-y-2">
                 {/* Visual ornament */}
-                <div className="flex items-center gap-1.5 text-brand-sand/70 animate-fade-in" aria-hidden="true">
+                <div
+                  className="flex items-center gap-1.5 text-brand-sand/70 animate-fade-in"
+                  aria-hidden="true"
+                >
                   <div className="h-1 w-1 rotate-45 transform bg-brand-sand"></div>
                   <div className="h-1.5 w-1.5 rotate-45 transform border border-brand-sand"></div>
                   <div className="h-1 w-1 rotate-45 transform bg-brand-sand"></div>
@@ -587,7 +624,7 @@ export function App() {
                 <div className="flex items-center gap-2">
                   <span className="h-[1px] w-6 bg-brand-sand/40"></span>
                   <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-brand-mocha/80">
-                    {items.length} {items.length === 1 ? 'item' : 'itens'}
+                    {items.length} {items.length === 1 ? "item" : "itens"}
                   </span>
                   <span className="h-[1px] w-6 bg-brand-sand/40"></span>
                 </div>
@@ -600,23 +637,24 @@ export function App() {
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {(isMobileViewport && !expandedCategories[category] ? items.slice(0, 10) : items).map((item) => (
+                {(isMobileViewport && !expandedCategories[category]
+                  ? items.slice(0, 10)
+                  : items
+                ).map((item) => (
                   <article
                     key={item.id}
                     onClick={() => !item.reserved && setSelectedGift(item)}
-                    className={`overflow-hidden rounded-[32px] border p-4 shadow-card backdrop-blur-md transition-all duration-300 ${
-                      item.reserved
-                        ? 'cursor-default border-brand-sand/30 bg-slate-100/50'
-                        : 'cursor-pointer border-brand-sand/35 bg-white/45 hover:-translate-y-1.5 hover:border-brand-olive/35 hover:shadow-[0_16px_36px_rgba(47,75,63,0.08)]'
-                    }`}
+                    className={`overflow-hidden rounded-[32px] border p-4 shadow-card backdrop-blur-md transition-all duration-300 ${item.reserved
+                        ? "cursor-default border-brand-sand/30 bg-slate-100/50"
+                        : "cursor-pointer border-brand-sand/35 bg-white/45 hover:-translate-y-1.5 hover:border-brand-olive/35 hover:shadow-[0_16px_36px_rgba(47,75,63,0.08)]"
+                      }`}
                   >
                     <div className="relative">
                       <img
                         src={getGiftImageUrl(item)}
                         alt={item.name}
-                        className={`h-44 w-full rounded-[22px] object-cover ${
-                          item.reserved ? 'grayscale opacity-80' : ''
-                        }`}
+                        className={`h-44 w-full rounded-[22px] object-cover ${item.reserved ? "grayscale opacity-80" : ""
+                          }`}
                         onError={handleImageFallback}
                       />
                       {item.reserved && (
@@ -626,53 +664,67 @@ export function App() {
                       )}
                     </div>
 
-                    <h3 className="mt-4 font-serif text-[17px] md:text-lg font-semibold text-brand-charcoal leading-tight tracking-wide">{item.name}</h3>
+                    <h3 className="mt-4 font-serif text-[17px] md:text-lg font-semibold text-brand-charcoal leading-tight tracking-wide">
+                      {item.name}
+                    </h3>
                   </article>
                 ))}
               </div>
 
-              {isMobileViewport && items.length > 10 && !expandedCategories[category] && (
-                <div className="flex justify-center pt-4 md:hidden">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setExpandedCategories((current) => ({
-                        ...current,
-                        [category]: true,
-                      }))
-                    }
-                    className="inline-flex w-full max-w-xs justify-center items-center gap-2 rounded-full border border-brand-olive/35 bg-white px-6 py-3.5 text-xs font-bold uppercase tracking-[0.24em] text-brand-olive shadow-sm transition-all active:scale-95 hover:border-brand-olive/60 hover:bg-brand-cream/50"
-                  >
-                    Ver mais
-                  </button>
-                </div>
-              )}
+              {isMobileViewport &&
+                items.length > 10 &&
+                !expandedCategories[category] && (
+                  <div className="flex justify-center pt-4 md:hidden">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExpandedCategories((current) => ({
+                          ...current,
+                          [category]: true,
+                        }))
+                      }
+                      className="inline-flex w-full max-w-xs justify-center items-center gap-2 rounded-full border border-brand-olive/35 bg-white px-6 py-3.5 text-xs font-bold uppercase tracking-[0.24em] text-brand-olive shadow-sm transition-all active:scale-95 hover:border-brand-olive/60 hover:bg-brand-cream/50"
+                    >
+                      Ver mais
+                    </button>
+                  </div>
+                )}
 
-              {isMobileViewport && items.length > 10 && expandedCategories[category] && (
-                <div className="flex justify-center pt-4 md:hidden">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setExpandedCategories((current) => ({
-                        ...current,
-                        [category]: false,
-                      }))
-                    }
-                    className="inline-flex w-full max-w-xs justify-center items-center gap-2 rounded-full border border-brand-olive/35 bg-white px-6 py-3.5 text-xs font-bold uppercase tracking-[0.24em] text-brand-olive shadow-sm transition-all active:scale-95 hover:border-brand-olive/60 hover:bg-brand-cream/50"
-                  >
-                    Ver menos
-                  </button>
-                </div>
-              )}
+              {isMobileViewport &&
+                items.length > 10 &&
+                expandedCategories[category] && (
+                  <div className="flex justify-center pt-4 md:hidden">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExpandedCategories((current) => ({
+                          ...current,
+                          [category]: false,
+                        }))
+                      }
+                      className="inline-flex w-full max-w-xs justify-center items-center gap-2 rounded-full border border-brand-olive/35 bg-white px-6 py-3.5 text-xs font-bold uppercase tracking-[0.24em] text-brand-olive shadow-sm transition-all active:scale-95 hover:border-brand-olive/60 hover:bg-brand-cream/50"
+                    >
+                      Ver menos
+                    </button>
+                  </div>
+                )}
             </section>
           ))}
       </main>
 
       <footer className="mx-auto max-w-xl px-6 pb-12 text-center">
         <div className="text-sm leading-relaxed text-brand-mocha space-y-2">
-          <p className="font-semibold text-brand-olive font-serif text-[18px]">Uma dica simples e carinhosa:</p>
+          <p className="font-semibold text-brand-olive font-serif text-[18px]">
+            Uma dica simples e carinhosa:
+          </p>
           <p className="italic">
-            Para escolher o seu presente, é bem fácil: basta clicar em cima da imagem do item que você mais gostou, digitar o seu nome completo e clicar no botão para confirmar. Viu só que facinho? Muito obrigado(a) por nos ajudar a construir o nosso lar! <span className="not-italic font-semibold text-brand-olive ml-2">— Com amor, Wendell e Luana</span>
+            Para escolher o seu presente, é bem fácil: basta clicar em cima da
+            imagem do item que você mais gostou, digitar o seu nome completo e
+            clicar no botão para confirmar. Viu só que facinho? Muito
+            obrigado(a) por nos ajudar a construir o nosso lar!{" "}
+            <span className="not-italic font-semibold text-brand-olive ml-2">
+              — Com amor, Wendell e Luana
+            </span>
           </p>
         </div>
       </footer>
@@ -683,7 +735,7 @@ export function App() {
             className="absolute inset-0 bg-black/70"
             onClick={() => {
               setSelectedGift(null);
-              setReserveError('');
+              setReserveError("");
             }}
           />
 
@@ -695,7 +747,9 @@ export function App() {
               onError={handleImageFallback}
             />
 
-            <h3 className="mt-4 text-xl font-semibold text-brand-charcoal">{selectedGift.name}</h3>
+            <h3 className="mt-4 text-xl font-semibold text-brand-charcoal">
+              {selectedGift.name}
+            </h3>
 
             <form onSubmit={handleReserve} className="mt-5 space-y-3">
               <label className="block text-sm text-brand-mocha">
@@ -705,7 +759,7 @@ export function App() {
                   value={guestName}
                   onChange={(event) => {
                     setGuestName(event.target.value);
-                    setReserveError('');
+                    setReserveError("");
                   }}
                   className="mt-2 w-full rounded-full border border-brand-wood/30 bg-brand-cream/40 px-4 py-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-olive"
                   placeholder="Digite seu nome completo"
